@@ -1,0 +1,70 @@
+Firmware Developer Guide
+========================
+
+## Build System
+- {doc/buildsystem.mdown}
+
+## Sample Apps
+
+### Test/skeleton app
+- {testapp/testapp.c}
+
+### BASIC interpreter
+- {basic/basic.c}
+
+### Radio testing
+#### Packet sniffer
+- {sniffapp/sniffapp.c}
+#### Simple coordinator
+- {coordapp/coordapp.c}
+#### Simple node
+- {nodeapp/nodeapp.c}
+
+
+### Pachube
+- {pbhub/pbhub.c}
+- {pbnode/pbnode.c}
+- {pbled/pbled.c}
+
+### Network coordinator (hub)
+- {netapp/netapp.c}
+
+API Reference
+-------------
+
+### Application
+- {include/app.h}
+
+### Core OS
+- {include/flashvars.h}
+- {include/config.h}
+- {include/watchdog.h}
+- {include/cons.h}
+- {include/random.h}
+- {include/clock.h}
+- {include/sleep.h}
+- {include/cmd.h}
+- {include/interrupts.h}
+- {include/pkt.h}
+- {include/timer.h}
+- {include/itoa.h}
+- {include/nibble.h}
+- {include/shell.h}
+
+### Radio
+- {include/radio.h}
+- {include/mac.h}
+- {include/pb.h}
+
+### Peripherals
+- {include/led.h}
+- {include/adc.h}
+- {include/i2c.h}
+- {include/pwm.h}
+- {include/spi.h}
+
+### IP Networking
+- {include/net.h}
+- {include/ether.h}
+- {include/tcp.h}
+

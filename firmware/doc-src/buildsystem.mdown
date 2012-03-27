@@ -1,0 +1,63 @@
+# BuildSystem
+
+## Apps
+
+All apps are in the folder `apps`.
+
+Each application is contained in a folder with the name of the app, eg. `sniffapp`.
+Inside this folder are:
+
+- `sniffapp.mk` the Makefile
+- `sniffapp.c` the entry point for the app
+
+
+### Building an app
+
+All apps are built by invoking the master `Makefile`.
+
+        make APP=sniffapp
+        make APP=sniffapp clean
+
+
+To flash a device with an app, using the CCTL bootloader.
+
+        make APP=sniffapp install
+
+
+By default all apps build for CC1110. However, they can all be built for the host PC using `PLATFORM=POSIX`. The `install` target will run the application. Radio networking is simulated with IP multicast.
+
+        make APP=sniffapp PLATFORM=POSIX install
+
+
+Valid `PLATFORM`s are `CC1110` and `POSIX`.
+
+### App Makefile
+
+Each app contains a custom Makefile fragment which is included by `Makefile` during the build process.
+The job of the app Makefile is to select features for the firmware and set compile time options. A typical app Makefile might say
+
+        CONS_ENABLED=Y
+        ATTR_ENABLED=Y
+        BUTTONS_ENABLED=Y
+        LED_P1_1_ENABLED=Y
+        CRYSTAL32KHZ_ENABLED=Y
+        SLEEP_ENABLED=Y
+        MAC_ENABLED=Y
+        ADC_ENABLED=Y
+
+Where possible, firmware features are selected at compile time. Each feature is select by a line in the app Makefile. These are then processed in `Makefile.app`. For example, the `SLEEP_ENABLED` option pulls in object code and sets a preprocessor definition.
+
+        ifeq ($(SLEEP_ENABLED),Y)
+        LIBS += os/sleep.$(OBJEXT)
+        CFLAGS += -DSLEEP_ENABLED
+        endif
+
+The app Makefile can pull in extra source files. For example, to add the file `foo.c` to the build add the following to the app Makefile:
+
+        LIBS += $(APP)/foo.$(OBJEXT)
+
+## Patching and config
+
+Each device has a small config area at the top of flash, the layout is in `flashvars.h`. After building the application, the config area will be patched with settings taken from `config.mk`.
+
+

@@ -1,0 +1,7 @@
+all:
+	rm -rf doc-src/doc doc/doc.zip
+	doc-src/jodoc --toc doc-src/toc.mdown --template doc-src/template.html . --output doc-src/doc 
+	cp -a doc-src/style.css doc-src/highlight.pack.js doc-src/highlight.css doc-src/doc
+	mv doc-src/doc/_content.html doc-src/doc/index.html
+	chmod 644 doc-src/doc/*
+	(cd doc-src && zip -r doc.zip doc/)
