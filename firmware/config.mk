@@ -8,7 +8,7 @@
 #
 # For Linux
 # CCTL_DEVICE ?= /dev/ttyUSB0
-#$(error Edit config.mk for your serial port location, then comment out this line)
+$(error Edit config.mk for your serial port location, then comment out this line)
 
 CONFIG = \
     --eui64=0000000000000002 \
