@@ -298,8 +298,11 @@ combined:
 	(config/patcher obj/$(PLATFORM)/$(APP)-combined.hex $(CONFIG) > obj/$(PLATFORM)/$(APP)-combined-patched.hex) || rm -f obj/$(PLATFORM)/$(APP)-combined-patched.hex
 
 
-
+ifeq ($(SKETCHWRAPPER_ENABLED),Y)
+obj/$(PLATFORM)/$(APP)/%.$(OBJEXT) : %.c $(HEADERS) apps/$(APP)/$(APP).ino
+else
 obj/$(PLATFORM)/$(APP)/%.$(OBJEXT) : %.c $(HEADERS)
+endif
 	@mkdir -p obj/$(PLATFORM)/$(APP)/apps/$(APP)
 	@mkdir -p obj/$(PLATFORM)/$(APP)/uip
 	@mkdir -p obj/$(PLATFORM)/$(APP)/os
