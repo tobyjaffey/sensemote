@@ -267,7 +267,7 @@ void bootloader_main(void)
 
     n = 8;
     i = 65535;
-    while(!cons_getch() && n > 0)
+    while(!cons_getch() && n > 0 && page != '!')
     {
         if (i-- == 0)
         {

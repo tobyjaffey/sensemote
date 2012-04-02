@@ -488,7 +488,7 @@ int wait_for_bootloader(int fd, int timeout)
     if (now.tv_sec - start.tv_sec >= timeout)
         return 1;
 
-    c = 0x00;
+    c = '!';
     if (serialWrite(fd, &c, 1) <= 0)
         return 1;
 

@@ -70,7 +70,7 @@ Serial protocol
 CCTL uses a custom binary serial protocol, running at 115200bps, 8 bits, no party, 1 stop bit.
 
 On reset, the bootloader prints "\r\nCCTL\r\n" followed by "B" up to 8 times with a delay between each.
-If the bootloader receives any character before printing "B" 8 times, it will enter upgrade mode.
+If the bootloader receives the "!" character before printing "B" 8 times, it will enter upgrade mode.
 
 If no character is received, the bootloader will attempt to launch user code from 0x400.
 
