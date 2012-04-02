@@ -262,11 +262,12 @@ void bootloader_main(void)
 
 	PERCFG = (PERCFG & ~PERCFG_U0CFG) | PERCFG_U1CFG;
 	P0SEL |= (1<<3) | (1<<2);
+
 	U0CSR = 0x80 | 0x40;    // UART, RX on
 #ifdef CRYSTAL_24_MHZ
 	U0BAUD = 59;    // 115200
 #endif
-#ifdef CRYSTAL_24_MHZ
+#ifdef CRYSTAL_26_MHZ
 	U0BAUD = 34;    // 115200
 #endif
 	U0GCR = 13; // 115k2 baud at 13MHz, useful for coming out of sleep.  Assumes clkspd_div2 in clkcon for HSRC osc
