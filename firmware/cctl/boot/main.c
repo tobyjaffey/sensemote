@@ -26,9 +26,13 @@
 
 // Flash write timer value:
 // FWT = 21000 * FCLK / (16 * 10^9)
-// For FCLK = 24MHz, FWT = 0x1F
-// For FCLK = 26MHz, FWT = 0x11
+#ifdef CRYSTAL_24_MHZ
+#define FLASH_FWT 0x1F
+#endif
+#ifdef CRYSTAL_26_MHZ
 #define FLASH_FWT 0x11
+#endif
+
 // Address of flash controller data register
 #define FLASH_FWDATA_ADDR 0xDFAF
 
@@ -259,7 +263,12 @@ void bootloader_main(void)
 	PERCFG = (PERCFG & ~PERCFG_U0CFG) | PERCFG_U1CFG;
 	P0SEL |= (1<<3) | (1<<2);
 	U0CSR = 0x80 | 0x40;    // UART, RX on
+#ifdef CRYSTAL_24_MHZ
+	U0BAUD = 59;    // 115200
+#endif
+#ifdef CRYSTAL_24_MHZ
 	U0BAUD = 34;    // 115200
+#endif
 	U0GCR = 13; // 115k2 baud at 13MHz, useful for coming out of sleep.  Assumes clkspd_div2 in clkcon for HSRC osc
 	URX0IF = 0;	// No interrupts pending at start
 	URX0IE = 1;	// Serial Rx irqs enabled in system interrupt register
@@ -281,7 +290,7 @@ void bootloader_main(void)
             n--;
         }
     }
-    if (n != 0 && page == '!')
+    if (n != 0 && page == (uint8_t)'!')
         goto upgrade_loop;
 
     jump_to_user();

@@ -1,3 +1,5 @@
+CFLAGS += -DCRYSTAL_24_MHZ
+
 PROG = /cygdrive/c/Program\ Files/Texas\ Instruments/SmartRF\ Tools/Flash\ Programmer/bin/SmartRFProgConsole.exe
 
 TARGET = cctl.hex
@@ -5,7 +7,7 @@ TARGET = cctl.hex
 CC = sdcc
 AS = sdas8051
 
-CFLAGS = --model-small --opt-code-size
+CFLAGS += --model-small --opt-code-size
 
 LDFLAGS_FLASH = \
 	--out-fmt-ihx \
