@@ -82,6 +82,9 @@ struct cc_dma_channel
 
 void flash_erase_page(void)
 {
+  if (page == 0)
+    return;
+
   while (FCTL & FCTL_BUSY);
   
   FWT = FLASH_FWT;
@@ -128,6 +131,9 @@ void flash_write_trigger(void)
 
 void flash_write(void)
 {
+ if (page == 0)
+    return;
+
   // Setup DMA descriptor
   dma0_config.src_high  = (((uint16_t)(__xdata uint16_t *)rambuf) >> 8) & 0x00FF;
   dma0_config.src_low   = ((uint16_t)(__xdata uint16_t *)rambuf) & 0x00FF;
@@ -267,7 +273,7 @@ void bootloader_main(void)
 
     n = 8;
     i = 65535;
-    while(!cons_getch() && n > 0 && page != '!')
+    while(!cons_getch() && n > 0)
     {
         if (i-- == 0)
         {
@@ -275,7 +281,7 @@ void bootloader_main(void)
             n--;
         }
     }
-    if (n != 0)
+    if (n != 0 && page == '!')
         goto upgrade_loop;
 
     jump_to_user();
