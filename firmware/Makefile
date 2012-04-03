@@ -46,6 +46,12 @@ CFLAGS += --opt-code-size
 CFLAGS += --stack-auto
 CFLAGS += --Werror
 CFLAGS += -DCC1110_ENABLED
+ifeq ($(CRYSTAL_24_MHZ),Y)
+CFLAGS += -DCRYSTAL_24_MHZ
+endif
+ifeq ($(CRYSTAL_26_MHZ),Y)
+CFLAGS += -DCRYSTAL_26_MHZ
+endif
 OBJEXT=rel
 ifeq ($(NET_ENABLED),Y)
 SOCK_NET_ENABLED=N
