@@ -85,7 +85,12 @@ void cons_init(void)
 #endif
 #endif
     U0CSR = 0x00;
+#ifdef CRYSTAL_24_MHZ
+	U0BAUD = 59;    // 115200
+#endif
+#ifdef CRYSTAL_26_MHZ
 	U0BAUD = 34;    // 115200
+#endif
 	U0GCR = 13; // 115k2 baud at 13MHz, useful for coming out of sleep.  Assumes clkspd_div2 in clkcon for HSRC osc
 	PERCFG = (PERCFG & ~PERCFG_U0CFG) | PERCFG_U1CFG;
 	P0SEL |= BIT3 | BIT2;
