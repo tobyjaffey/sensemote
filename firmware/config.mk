@@ -10,6 +10,13 @@
 # CCTL_DEVICE ?= /dev/ttyUSB0
 $(error Edit config.mk for your serial port location, then comment out this line)
 
+# Device type
+$(error Edit config.mk for your device type then comment out this line)
+# uncomment line for Ciseco XRF v1.5+/CC1111 (24MHz)
+# CRYSTAL_24_MHZ=Y
+# uncomment line for Ciseco XRF v1.4 and lower (26MHz)
+# CRYSTAL_26_MHZ=Y
+
 CONFIG = \
     --eui64=0000000000000002 \
     --mac=000102030405 \
