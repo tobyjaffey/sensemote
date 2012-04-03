@@ -110,12 +110,26 @@ void radio_init(void)
 	CHANNR     =     0x00;       // Channel Number 
 	FSCTRL1    =     0x0C;       // Frequency Synthesizer Control 
 	FSCTRL0    =     0x00;       // Frequency Synthesizer Control 
+#ifdef CRYSTAL_26_MHZ
 	FREQ2      =     0x21;       // Frequency Control Word, High Byte 
 	FREQ1      =     0x65;       // Frequency Control Word, Middle Byte 
 	FREQ0      =     0x6A;       // Frequency Control Word, Low Byte 
+#endif
+#ifdef CRYSTAL_24_MHZ
+	FREQ2      =     0x24;       // Frequency Control Word, High Byte 
+	FREQ1      =     0x2D;       // Frequency Control Word, Middle Byte 
+	FREQ0      =     0xDD;       // Frequency Control Word, Low Byte 
+#endif
+#ifdef CRYSTAL_26_MHZ
 	MDMCFG4    =     0x2D;       // Modem configuration 
 	MDMCFG3    =     0x3B;       // Modem Configuration 
+#endif
+#ifdef CRYSTAL_24_MHZ
+	MDMCFG4    =     0x1D;       // Modem configuration 
+	MDMCFG3    =     0x55;       // Modem Configuration 
+#endif
 	MDMCFG2    =     0x13;       // Modem Configuration 
+
 	MDMCFG1    =     0x22;       // Modem Configuration 
 	MDMCFG0    =     0xF8;       // Modem Configuration 
 	DEVIATN    =     0x62;       // Modem Deviation Setting 
@@ -147,8 +161,6 @@ void radio_init(void)
 	IOCFG2     =     0x00;       // Radio Test Signal Configuration (P1_7) 
 	IOCFG1     =     0x00;       // Radio Test Signal Configuration (P1_6) 
 	IOCFG0     =     0x00;       // Radio Test Signal Configuration (P1_5) 
-	PARTNUM    =     0x01;       // Chip ID[15:8] 
-	VERSION    =     0x03;       // Chip ID[7:0] 
 	FREQEST    =     0x00;       // Frequency Offset Estimate from Demodulator 
 	LQI        =     0x00;       // Demodulator Estimate for Link Quality 
 	RSSI       =     0x80;       // Received Signal Strength Indication 
