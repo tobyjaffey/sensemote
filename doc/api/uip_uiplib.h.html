@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\file</li>
+<li>Various uIP library functions.</li>
+<li>\author</li>
+<li><p>Adam Dunkels <a href="&#109;a&#105;&#108;&#x74;&#111;:&#97;&#x64;&#97;&#109;&#64;&#115;&#x69;&#99;&#x73;&#x2E;s&#x65;">&#97;&#x64;&#97;&#109;&#64;&#115;&#x69;&#99;&#x73;&#x2E;s&#x65;</a>
+*</p></li>
+<li><p>\addtogroup uipconvfunc</p></li>
+<li><p>@{</p></li>
+<li><p>Convert a textual representation of an IP address to a numerical representation.
+*</p></li>
+<li>This function takes a textual representation of an IP address in</li>
+<li>the form a.b.c.d and converts it into a 4-byte array that can be</li>
+<li>used by other uIP functions.
+*</li>
+<li>\param addrstr A pointer to a string containing the IP address in</li>
+<li>textual form.
+*</li>
+<li>\param addr A pointer to a 4-byte array that will be filled in with</li>
+<li>the numerical representation of the address.
+*</li>
+<li>\retval 0 If the IP address could not be parsed.</li>
+<li><p>\retval Non-zero If the IP address was parsed.</p>
+
+<p>@} </p></li>
+</ul>
+</body>
+</html>

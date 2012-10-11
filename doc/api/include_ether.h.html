@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Ethernet">Ethernet</a></h1>
+
+<p>Support for ethernet.</p>
+
+<h2>ether_init</h2>
+
+<pre><code>   void ether_init(void)
+</code></pre>
+
+<p>Initialise ethernet device.</p>
+
+<h2>ether_tick</h2>
+
+<pre><code>   void ether_init(void)
+</code></pre>
+
+<p>Advance state of ethernet, should be called regularly.</p>
+
+<h2>ether_tx</h2>
+
+<pre><code>   void ether_tx(uint8_t *buf, uint16_t len);
+</code></pre>
+
+<p>Transmit an ethernet frame.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>buf</code> [in]
+<ul>
+<li><a href="include_ether.h.html#Ethernet">Ethernet</a> frame</li>
+</ul></li>
+<li><code>len</code> [in]
+<ul>
+<li>Frame length</li>
+</ul></li>
+</ul>
+
+<h2>ether_rx</h2>
+
+<pre><code>   uint16_t ether_rx(void)
+</code></pre>
+
+<p>Attempt to receive an ethernet frame. Should be called regularly, to prevent overflow.
+Frame data will be written directly to uIP's input buffer.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Length of received frame</li>
+</ul>
+
+<h2>ether_connected</h2>
+
+<pre><code>   void ether_connected(BOOLEAN connected)
+</code></pre>
+
+<p>Callback made to user to indicate ethernet link state change.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>connected</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Link up</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Link down</li>
+</ul></li>
+</ul></li>
+</ul>
+</body>
+</html>

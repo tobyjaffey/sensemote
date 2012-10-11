@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup uip</li>
+<li><p>@{</p></li>
+<li><p>\file</p></li>
+<li>Header file for the uIP <a href="include_tcp.h.html#TCP">TCP</a>/IP stack.</li>
+<li>\author Adam Dunkels <a href="&#x6D;&#97;&#x69;&#x6C;&#x74;&#111;:&#x61;&#100;&#97;&#x6D;&#64;&#x64;&#117;&#x6E;&#x6B;&#x65;&#108;&#x73;&#x2E;&#99;o&#x6D;">&#x61;&#100;&#97;&#x6D;&#64;&#x64;&#117;&#x6E;&#x6B;&#x65;&#108;&#x73;&#x2E;&#99;o&#x6D;</a>
+*</li>
+<li>The uIP <a href="include_tcp.h.html#TCP">TCP</a>/IP stack header file contains definitions for a number</li>
+<li>of C macros that are used by uIP programs as well as internal uIP</li>
+<li><p>structures, <a href="include_tcp.h.html#TCP">TCP</a>/IP header structures and function declarations.
+*</p></li>
+<li><p>Repressentation of an IP address.
+*</p></li>
+<li><p>\defgroup uipconffunc uIP configuration functions</p></li>
+<li>@{
+*</li>
+<li>The uIP configuration functions are used for setting run-time</li>
+<li><p>parameters in uIP such as IP addresses.</p></li>
+<li><p>Set the IP address of this host.
+*</p></li>
+<li>The IP address is represented as a 4-byte array where the first</li>
+<li>octet of the IP address is put in the first member of the 4-byte</li>
+<li>array.
+*</li>
+<li>Example:
+\code</li>
+</ul>
+
+<p>uip<em>ipaddr</em>t addr;</p>
+
+<p>uip<em>ipaddr(&amp;addr, 192,168,1,2);
+uip</em>sethostaddr(&amp;addr);</p>
+
+<p>\endcode
+* \param addr A pointer to an IP address of type uip<em>ipaddr</em>t;
+*
+* \sa uip_ipaddr()
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Get the IP address of this host.
+*</li>
+<li>The IP address is represented as a 4-byte array where the first</li>
+<li>octet of the IP address is put in the first member of the 4-byte</li>
+<li>array.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t hostaddr;</li>
+</ul>
+
+<p>uip<em>gethostaddr(&amp;hostaddr);
+\endcode
+* \param addr A pointer to a uip</em>ipaddr_t variable that will be
+* filled in with the currently configured IP address.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Set the default router's IP address.
+*</li>
+<li>\param addr A pointer to a uip<em>ipaddr</em>t variable containing the IP</li>
+<li>address of the default router.
+*</li>
+<li>\sa uip_ipaddr()
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Set the netmask.
+*</p></li>
+<li>\param addr A pointer to a uip<em>ipaddr</em>t variable containing the IP</li>
+<li>address of the netmask.
+*</li>
+<li>\sa uip_ipaddr()
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Get the default router's IP address.
+*</p></li>
+<li>\param addr A pointer to a uip<em>ipaddr</em>t variable that will be</li>
+<li>filled in with the IP address of the default router.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Get the netmask.
+*</p></li>
+<li>\param addr A pointer to a uip<em>ipaddr</em>t variable that will be</li>
+<li>filled in with the value of the netmask.
+*</li>
+<li><p>\hideinitializer</p>
+
+<p>@} </p></li>
+<li><p>\defgroup uipinit uIP initialization functions</p></li>
+<li>@{
+*</li>
+<li><p>The uIP initialization functions are used for booting uIP.</p></li>
+<li><p>uIP initialization function.
+*</p></li>
+<li>This function should be called at boot up to initilize the uIP</li>
+<li><p><a href="include_tcp.h.html#TCP">TCP</a>/IP stack.</p></li>
+<li><p>uIP initialization function.
+*</p></li>
+<li><p>This function may be used at boot time to set the initial ip_id.</p>
+
+<p>@} </p></li>
+<li><p>\defgroup uipdevfunc uIP device driver functions</p></li>
+<li>@{
+*</li>
+<li>These functions are used by a network device driver for interacting</li>
+<li><p>with uIP.</p></li>
+<li><p>Process an incoming packet.
+*</p></li>
+<li>This function should be called when the device driver has received</li>
+<li>a packet from the network. The packet from the device driver must</li>
+<li>be present in the uip_buf buffer, and the length of the packet</li>
+<li>should be placed in the uip_len variable.
+*</li>
+<li>When the function returns, there may be an outbound packet placed</li>
+<li>in the uip<em>buf packet buffer. If so, the uip</em>len variable is set to</li>
+<li>the length of the packet. If no packet is to be sent out, the</li>
+<li>uip_len variable is set to 0.
+*</li>
+<li>The usual way of calling the function is presented by the source</li>
+<li>code below.
+\code
+uip<em>len = devicedriver</em>poll();
+if(uip<em>len > 0) {
+uip</em>input();
+if(uip<em>len > 0) {
+ devicedriver</em>send();
+}
+}
+\endcode
+*</li>
+<li>\note If you are writing a uIP device driver that needs ARP</li>
+<li>(Address Resolution Protocol), e.g., when running uIP over</li>
+<li><a href="include_ether.h.html#Ethernet">Ethernet</a>, you will need to call the uIP ARP code before calling</li>
+<li>this function:
+\code
+#define BUF ((struct uip<em>eth</em>hdr *)&amp;uip<em>buf[0])
+uip</em>len = ethernet<em>devicedrver</em>poll();
+if(uip<em>len > 0) {
+if(BUF->type == HTONS(UIP</em>ETHTYPE<em>IP)) {
+ uip</em>arp<em>ipin();
+ uip</em>input();
+ if(uip<em>len > 0) {
+   uip</em>arp<em>out();
+ethernet</em>devicedriver<em>send();
+ }
+} else if(BUF->type == HTONS(UIP</em>ETHTYPE<em>ARP)) {
+ uip</em>arp<em>arpin();
+ if(uip</em>len > 0) {
+ethernet<em>devicedriver</em>send();
+ }
+}
+\endcode
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Periodic processing for a connection identified by its number.
+*</p></li>
+<li>This function does the necessary periodic processing (timers,</li>
+<li>polling) for a uIP <a href="include_tcp.h.html#TCP">TCP</a> conneciton, and should be called when the</li>
+<li>periodic uIP timer goes off. It should be called for every</li>
+<li>connection, regardless of whether they are open of closed.
+*</li>
+<li>When the function returns, it may have an outbound packet waiting</li>
+<li>for service in the uIP packet buffer, and if so the uip_len</li>
+<li>variable is set to a value larger than zero. The device driver</li>
+<li>should be called to send out the packet.
+*</li>
+<li>The ususal way of calling the function is through a for() loop like</li>
+<li>this:
+\code
+for(i = 0; i &lt; UIP<em>CONNS; ++i) {
+uip</em>periodic(i);
+if(uip<em>len > 0) {
+ devicedriver</em>send();
+}
+}
+\endcode
+*</li>
+<li>\note If you are writing a uIP device driver that needs ARP</li>
+<li>(Address Resolution Protocol), e.g., when running uIP over</li>
+<li><a href="include_ether.h.html#Ethernet">Ethernet</a>, you will need to call the uip<em>arp</em>out() function before</li>
+<li>calling the device driver:
+\code
+for(i = 0; i &lt; UIP<em>CONNS; ++i) {
+uip</em>periodic(i);
+if(uip<em>len > 0) {
+ uip</em>arp<em>out();
+ ethernet</em>devicedriver_send();
+}
+}
+\endcode
+*</li>
+<li>\param conn The number of the connection which is to be periodically polled.
+*</li>
+<li>\hideinitializer</li>
+</ul>
+
+<p>*
+*</p>
+
+<ul>
+<li>Perform periodic processing for a connection identified by a pointer</li>
+<li>to its structure.
+*</li>
+<li>Same as uip<em>periodic() but takes a pointer to the actual uip</em>conn</li>
+<li>struct instead of an integer as its argument. This function can be</li>
+<li>used to force periodic processing of a specific connection.
+*</li>
+<li>\param conn A pointer to the uip_conn struct for the connection to</li>
+<li>be processed.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Reuqest that a particular connection should be polled.
+*</p></li>
+<li>Similar to uip<em>periodic</em>conn() but does not perform any timer</li>
+<li>processing. The application is polled for new data.
+*</li>
+<li>\param conn A pointer to the uip_conn struct for the connection to</li>
+<li>be processed.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Periodic processing for a UDP connection identified by its number.
+*</p></li>
+<li>This function is essentially the same as uip_periodic(), but for</li>
+<li>UDP connections. It is called in a similar fashion as the</li>
+<li>uip<em>periodic() function:
+\code
+for(i = 0; i &lt; UIP</em>UDP<em>CONNS; i++) {
+uip</em>udp<em>periodic(i);
+if(uip</em>len > 0) {
+ devicedriver_send();
+}
+}
+\endcode
+*</li>
+<li>\note As for the uip_periodic() function, special care has to be</li>
+<li>taken when using uIP together with ARP and <a href="include_ether.h.html#Ethernet">Ethernet</a>:
+\code
+for(i = 0; i &lt; UIP<em>UDP</em>CONNS; i++) {
+uip<em>udp</em>periodic(i);
+if(uip<em>len > 0) {
+ uip</em>arp<em>out();
+ ethernet</em>devicedriver_send();
+}
+}
+\endcode
+*</li>
+<li>\param conn The number of the UDP connection to be processed.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Periodic processing for a UDP connection identified by a pointer to</p></li>
+<li>its structure.
+*</li>
+<li>Same as uip<em>udp</em>periodic() but takes a pointer to the actual</li>
+<li>uip_conn struct instead of an integer as its argument. This</li>
+<li>function can be used to force periodic processing of a specific</li>
+<li>connection.
+*</li>
+<li>\param conn A pointer to the uip<em>udp</em>conn struct for the connection</li>
+<li>to be processed.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>The uIP packet buffer.
+*</p></li>
+<li>The uip_buf array is used to hold incoming and outgoing</li>
+<li>packets. The device driver should place incoming data into this</li>
+<li>buffer. When sending data, the device driver should read the link</li>
+<li>level headers and the <a href="include_tcp.h.html#TCP">TCP</a>/IP headers from this buffer. The size of</li>
+<li>the link level headers is configured by the UIP<em>LLH</em>LEN define.
+*</li>
+<li>\note The application data need not be placed in this buffer, so</li>
+<li>the device driver must read it from the place pointed to by the</li>
+<li><p>uip<em>appdata pointer as illustrated by the following example:
+\code
+void
+devicedriver</em>send(void)
+{
+hwsend(&amp;uip<em>buf[0], UIP</em>LLH<em>LEN);
+if(uip</em>len &lt;= UIP<em>LLH</em>LEN + UIP<em>TCPIP</em>HLEN) {
+ hwsend(&amp;uip<em>buf[UIP</em>LLH<em>LEN], uip</em>len - UIP<em>LLH</em>LEN);
+} else {
+ hwsend(&amp;uip<em>buf[UIP</em>LLH<em>LEN], UIP</em>TCPIP<em>HLEN);
+ hwsend(uip</em>appdata, uip<em>len - UIP</em>TCPIP<em>HLEN - UIP</em>LLH_LEN);
+}
+}
+\endcode</p>
+
+<p>@} </p></li>
+<li><p>\defgroup uipappfunc uIP application functions</p></li>
+<li>@{
+*</li>
+<li><p>Functions used by an application running of top of uIP.</p></li>
+<li><p>Start listening to the specified port.
+*</p></li>
+<li>\note Since this function expects the port number in network byte</li>
+<li>order, a conversion using HTONS() or htons() is necessary.
+*
+\code
+uip_listen(HTONS(80));
+\endcode
+*</li>
+<li><p>\param port A 16-bit port number in network byte order.</p></li>
+<li><p>Stop listening to the specified port.
+*</p></li>
+<li>\note Since this function expects the port number in network byte</li>
+<li>order, a conversion using HTONS() or htons() is necessary.
+*
+\code
+uip_unlisten(HTONS(80));
+\endcode
+*</li>
+<li><p>\param port A 16-bit port number in network byte order.</p></li>
+<li><p>Connect to a remote host using <a href="include_tcp.h.html#TCP">TCP</a>.
+*</p></li>
+<li>This function is used to start a new connection to the specified</li>
+<li>port on the specied host. It allocates a new connection identifier,</li>
+<li>sets the connection to the SYN_SENT state and sets the</li>
+<li>retransmission timer to 0. This will cause a <a href="include_tcp.h.html#TCP">TCP</a> SYN segment to be</li>
+<li>sent out the next time this connection is periodically processed,</li>
+<li>which usually is done within 0.5 seconds after the call to</li>
+<li>uip_connect().
+*</li>
+<li>\note This function is avaliable only if support for active open</li>
+<li>has been configured by defining UIP<em>ACTIVE</em>OPEN to 1 in uipopt.h.
+*</li>
+<li>\note Since this function requires the port number to be in network</li>
+<li>byte order, a conversion using HTONS() or htons() is necessary.
+*
+\code
+uip<em>ipaddr</em>t ipaddr;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 192,168,1,2);
+uip</em>connect(&amp;ipaddr, HTONS(80));
+\endcode
+*
+* \param ripaddr The IP address of the remote hot.
+*
+* \param port A 16-bit port number in network byte order.
+*
+* \return A pointer to the uIP connection identifier for the new connection,
+* or NULL if no connection could be allocated.
+*</p>
+
+<ul>
+<li>\internal
+*</li>
+<li>Check if a connection has outstanding (i.e., unacknowledged) data.
+*</li>
+<li>\param conn A pointer to the uip_conn structure for the connection.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Send data on the current connection.
+*</p></li>
+<li>This function is used to send out a single segment of <a href="include_tcp.h.html#TCP">TCP</a></li>
+<li>data. Only applications that have been invoked by uIP for event</li>
+<li>processing can send data.
+*</li>
+<li>The amount of data that actually is sent out after a call to this</li>
+<li>funcion is determined by the maximum amount of data <a href="include_tcp.h.html#TCP">TCP</a> allows. uIP</li>
+<li>will automatically crop the data so that only the appropriate</li>
+<li>amount of data is sent. The function uip_mss() can be used to query</li>
+<li>uIP for the amount of data that actually will be sent.
+*</li>
+<li>\note This function does not guarantee that the sent data will</li>
+<li>arrive at the destination. If the data is lost in the network, the</li>
+<li>application will be invoked with the uip_rexmit() event being</li>
+<li>set. The application will then have to resend the data using this</li>
+<li>function.
+*</li>
+<li>\param data A pointer to the data which is to be sent.
+*</li>
+<li>\param len The maximum amount of data bytes to be sent.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>The length of any incoming data that is currently avaliable (if avaliable)</p></li>
+<li>in the uip_appdata buffer.
+*</li>
+<li>The test function uip_data() must first be used to check if there</li>
+<li>is any data available at all.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>The length of any out-of-band data (urgent data) that has arrived</p></li>
+<li>on the connection.
+*</li>
+<li>\note The configuration parameter UIP_URGDATA must be set for this</li>
+<li>function to be enabled.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Close the current connection.
+*</p></li>
+<li>This function will close the current connection in a nice way.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Abort the current connection.
+*</p></li>
+<li>This function will abort (reset) the current connection, and is</li>
+<li>usually used when an error has occured that prevents using the</li>
+<li>uip_close() function.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Tell the sending host to stop sending data.
+*</p></li>
+<li>This function will close our receiver's window so that we stop</li>
+<li>receiving data for the current connection.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Find out if the current connection has been previously stopped with</p></li>
+<li>uip_stop().
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Restart the current connection, if is has previously been stopped</p></li>
+<li>with uip_stop().
+*</li>
+<li>This function will open the receiver's window again so that we</li>
+<li>start receiving data for the current connection.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Is the current connection a UDP connection?
+*</p></li>
+<li>This function checks whether the current connection is a UDP connection.
+*</li>
+<li><p>\hideinitializer
+*</p></li>
+<li><p>Is new incoming data available?
+*</p></li>
+<li>Will reduce to non-zero if there is new data for the application</li>
+<li>present at the uip_appdata pointer. The size of the data is</li>
+<li>avaliable through the uip_len variable.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Has previously sent data been acknowledged?
+*</p></li>
+<li>Will reduce to non-zero if the previously sent data has been</li>
+<li>acknowledged by the remote host. This means that the application</li>
+<li>can send new data.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Has the connection just been connected?
+*</p></li>
+<li>Reduces to non-zero if the current connection has been connected to</li>
+<li>a remote host. This will happen both if the connection has been</li>
+<li>actively opened (with uip_connect()) or passively opened (with</li>
+<li>uip_listen()).
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Has the connection been closed by the other end?
+*</p></li>
+<li>Is non-zero if the connection has been closed by the remote</li>
+<li>host. The application may then do the necessary clean-ups.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Has the connection been aborted by the other end?
+*</p></li>
+<li>Non-zero if the current connection has been aborted (reset) by the</li>
+<li>remote host.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Has the connection timed out?
+*</p></li>
+<li>Non-zero if the current connection has been aborted due to too many</li>
+<li>retransmissions.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Do we need to retransmit previously data?
+*</p></li>
+<li>Reduces to non-zero if the previously sent data has been lost in</li>
+<li>the network, and the application should retransmit it. The</li>
+<li>application should send the exact same data as it did the last</li>
+<li>time, using the uip_send() function.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Is the connection being polled by uIP?
+*</p></li>
+<li>Is non-zero if the reason the application is invoked is that the</li>
+<li>current connection has been idle for a while and should be</li>
+<li>polled.
+*</li>
+<li>The polling event can be used for sending data without having to</li>
+<li>wait for the remote host to send data.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Get the initial maxium segment size (MSS) of the current</p></li>
+<li>connection.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Get the current maxium segment size that can be sent on the current</p></li>
+<li>connection.
+*</li>
+<li>The current maxiumum segment size that can be sent on the</li>
+<li>connection is computed from the receiver's window and the MSS of</li>
+<li>the connection (which also is available by calling</li>
+<li>uip_initialmss()).
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Set up a new UDP connection.
+*</p></li>
+<li>This function sets up a new UDP connection. The function will</li>
+<li>automatically allocate an unused local port for the new</li>
+<li>connection. However, another port can be chosen by using the</li>
+<li>uip<em>udp</em>bind() call, after the uip<em>udp</em>new() function has been</li>
+<li>called.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t addr;
+struct uip<em>udp</em>conn *c;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;addr, 192,168,2,1);
+c = uip</em>udp<em>new(&amp;addr, HTONS(12345));
+if(c != NULL) {
+  uip</em>udp<em>bind(c, HTONS(12344));
+}
+\endcode
+* \param ripaddr The IP address of the remote host.
+*
+* \param rport The remote port number in network byte order.
+*
+* \return The uip</em>udp_conn structure for the new connection or NULL
+* if no connection could be allocated.</p>
+
+<ul>
+<li>Removed a UDP connection.
+*</li>
+<li>\param conn A pointer to the uip<em>udp</em>conn structure for the connection.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Bind a UDP connection to a local port.
+*</p></li>
+<li>\param conn A pointer to the uip<em>udp</em>conn structure for the</li>
+<li>connection.
+*</li>
+<li>\param port The local port number, in network byte order.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Send a UDP datagram of length len on the current connection.
+*</p></li>
+<li>This function can only be called in response to a UDP event (poll</li>
+<li>or newdata). The data must be present in the uip_buf buffer, at the</li>
+<li>place pointed to by the uip_appdata pointer.
+*</li>
+<li>\param len The length of the data in the uip_buf buffer.
+*</li>
+<li><p>\hideinitializer</p>
+
+<p>@} </p></li>
+<li><p>\defgroup uipconvfunc uIP conversion functions</p></li>
+<li>@{
+*</li>
+<li>These functions can be used for converting between different data</li>
+<li><p>formats used by uIP.</p></li>
+<li><p>Construct an IP address from four bytes.
+*</p></li>
+<li>This function constructs an IP address of the type that uIP handles</li>
+<li>internally from four bytes. The function is handy for specifying IP</li>
+<li>addresses to use with e.g. the uip_connect() function.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr;
+struct uip_conn *c;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 192,168,1,2);
+c = uip</em>connect(&amp;ipaddr, HTONS(80));
+\endcode
+*
+* \param addr A pointer to a uip<em>ipaddr</em>t variable that will be
+* filled in with the IP address.
+*
+* \param addr0 The first octet of the IP address.
+* \param addr1 The second octet of the IP address.
+* \param addr2 The third octet of the IP address.
+* \param addr3 The forth octet of the IP address.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Construct an IPv6 address from eight 16-bit words.
+*</li>
+<li>This function constructs an IPv6 address.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Copy an IP address to another IP address.
+*</p></li>
+<li>Copies an IP address from one place to another.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr1, ipaddr2;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr1, 192,16,1,2);
+uip</em>ipaddr_copy(&amp;ipaddr2, &amp;ipaddr1);
+\endcode
+*
+* \param dest The destination for the copy.
+* \param src The source from where to copy.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Compare two IP addresses
+*</li>
+<li>Compares two IP addresses.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr1, ipaddr2;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr1, 192,16,1,2);
+if(uip</em>ipaddr_cmp(&amp;ipaddr2, &amp;ipaddr1)) {
+   printf("They are the same");
+}
+\endcode
+*
+* \param addr1 The first IP address.
+* \param addr2 The second IP address.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Compare two IP addresses with netmasks
+*</li>
+<li>Compares two IP addresses with netmasks. The masks are used to mask</li>
+<li>out the bits that are to be compared.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr1, ipaddr2, mask;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;mask, 255,255,255,0);
+uip</em>ipaddr(&amp;ipaddr1, 192,16,1,2);
+uip<em>ipaddr(&amp;ipaddr2, 192,16,1,3);
+if(uip</em>ipaddr_maskcmp(&amp;ipaddr1, &amp;ipaddr2, &amp;mask)) {
+   printf("They are the same");
+}
+\endcode
+*
+* \param addr1 The first IP address.
+* \param addr2 The second IP address.
+* \param mask The netmask.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Mask out the network part of an IP address.
+*</li>
+<li>Masks out the network part of an IP address, given the address and</li>
+<li>the netmask.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr1, ipaddr2, netmask;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr1, 192,16,1,2);
+uip</em>ipaddr(&amp;netmask, 255,255,255,0);
+uip<em>ipaddr</em>mask(&amp;ipaddr2, &amp;ipaddr1, &amp;netmask);
+\endcode
+*
+* In the example above, the variable "ipaddr2" will contain the IP
+* address 192.168.1.0.
+*
+* \param dest Where the result is to be placed.
+* \param src The IP address.
+* \param mask The netmask.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Pick the first octet of an IP address.
+*</li>
+<li>Picks out the first octet of an IP address.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr;
+u8_t octet;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 1,2,3,4);
+octet = uip</em>ipaddr1(&amp;ipaddr);
+\endcode
+*
+* In the example above, the variable "octet" will contain the value 1.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Pick the second octet of an IP address.
+*</li>
+<li>Picks out the second octet of an IP address.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr;
+u8_t octet;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 1,2,3,4);
+octet = uip</em>ipaddr2(&amp;ipaddr);
+\endcode
+*
+* In the example above, the variable "octet" will contain the value 2.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Pick the third octet of an IP address.
+*</li>
+<li>Picks out the third octet of an IP address.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr;
+u8_t octet;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 1,2,3,4);
+octet = uip</em>ipaddr3(&amp;ipaddr);
+\endcode
+*
+* In the example above, the variable "octet" will contain the value 3.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Pick the fourth octet of an IP address.
+*</li>
+<li>Picks out the fourth octet of an IP address.
+*</li>
+<li>Example:
+\code
+uip<em>ipaddr</em>t ipaddr;
+u8_t octet;</li>
+</ul>
+
+<p>uip<em>ipaddr(&amp;ipaddr, 1,2,3,4);
+octet = uip</em>ipaddr4(&amp;ipaddr);
+\endcode
+*
+* In the example above, the variable "octet" will contain the value 4.
+*
+* \hideinitializer</p>
+
+<ul>
+<li>Convert 16-bit quantity from host byte order to network byte order.
+*</li>
+<li>This macro is primarily used for converting constants from host</li>
+<li>byte order to network byte order. For converting variables to</li>
+<li>network byte order, use the htons() function instead.
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Convert 16-bit quantity from host byte order to network byte order.
+*</p></li>
+<li>This function is primarily used for converting variables from host</li>
+<li>byte order to network byte order. For converting constants to</li>
+<li><p>network byte order, use the HTONS() macro instead.</p>
+
+<p>@} </p></li>
+<li><p>Pointer to the application data in the packet buffer.
+*</p></li>
+<li>This pointer points to the application data when the application is</li>
+<li>called. If the application wishes to send data, the application may</li>
+<li><p>use this space to write the data into before calling uip_send().</p></li>
+<li><p>\defgroup uipdrivervars Variables used in uIP device drivers</p></li>
+<li>@{
+*</li>
+<li>uIP has a few global variables that are used in device drivers for</li>
+<li><p>uIP.</p></li>
+<li><p>The length of the packet in the uip_buf buffer.
+*</p></li>
+<li>The global variable uip_len holds the length of the packet in the</li>
+<li>uip_buf buffer.
+*</li>
+<li>When the network device driver calls the uIP input function,</li>
+<li>uip<em>len should be set to the length of the packet in the uip</em>buf</li>
+<li>buffer.
+*</li>
+<li>When sending packets, the device driver should use the contents of</li>
+<li>the uip_len variable to determine the length of the outgoing</li>
+<li><p>packet.
+*</p>
+
+<p>@} </p></li>
+<li><p>Representation of a uIP <a href="include_tcp.h.html#TCP">TCP</a> connection.
+*</p></li>
+<li>The uip_conn structure is used for identifying a connection. All</li>
+<li>but one field in the structure are to be considered read-only by an</li>
+<li>application. The only exception is the appstate field whos purpose</li>
+<li>is to let the application store application-specific state (e.g.,</li>
+<li>file pointers) for the connection. The type of this field is</li>
+<li>configured in the "uipopt.h" header file.</li>
+</ul>
+
+<p>&lt; The IP address of the remote host. 
+&lt; The local <a href="include_tcp.h.html#TCP">TCP</a> port, in network byte order. 
+&lt; The local remote <a href="include_tcp.h.html#TCP">TCP</a> port, in network byte
+         order. 
+&lt; The sequence number that we expect to
+         receive next. 
+&lt; The sequence number that was last sent by
+                        us. 
+&lt; Length of the data that was previously sent. 
+&lt; Current maximum segment size for the
+         connection. 
+&lt; Initial maximum segment size for the
+         connection. 
+&lt; Retransmission time-out calculation state
+         variable. 
+&lt; Retransmission time-out calculation state
+         variable. 
+&lt; Retransmission time-out. 
+&lt; <a href="include_tcp.h.html#TCP">TCP</a> state and flags. 
+&lt; The retransmission timer. 
+&lt; The number of retransmissions for the last
+         segment sent. 
+ The application state. </p>
+
+<ul>
+<li>Pointer to the current <a href="include_tcp.h.html#TCP">TCP</a> connection.
+*</li>
+<li>The uip_conn pointer can be used to access the current <a href="include_tcp.h.html#TCP">TCP</a></li>
+<li><p>connection.</p></li>
+<li><p>\addtogroup uiparch</p></li>
+<li><p>@{</p></li>
+<li><p>4-byte array used for the 32-bit sequence number calculations.</p>
+
+<p>@} </p></li>
+<li><p>Representation of a uIP UDP connection.</p></li>
+</ul>
+
+<p>&lt; The IP address of the remote peer. 
+&lt; The local port number in network byte order. 
+&lt; The remote port number in network byte order. 
+&lt; Default time-to-live. 
+ The application state. </p>
+
+<ul>
+<li><p>The current UDP connection.</p></li>
+<li><p>The structure holding the <a href="include_tcp.h.html#TCP">TCP</a>/IP statistics that are gathered if</p></li>
+<li>UIP_STATISTICS is set to 1.
+*</li>
+</ul>
+
+<p>&lt; Number of dropped packets at the IP
+             layer. 
+&lt; Number of received packets at the IP
+             layer. 
+&lt; Number of sent packets at the IP
+             layer. 
+&lt; Number of packets dropped due to wrong
+             IP version or header length. 
+&lt; Number of packets dropped due to wrong
+             IP length, high byte. 
+&lt; Number of packets dropped due to wrong
+             IP length, low byte. 
+&lt; Number of packets dropped since they
+             were IP fragments. 
+&lt; Number of packets dropped due to IP
+             checksum errors. 
+&lt; Number of packets dropped since they
+             were neither ICMP, UDP nor <a href="include_tcp.h.html#TCP">TCP</a>. 
+&lt; IP statistics. 
+&lt; Number of dropped ICMP packets. 
+&lt; Number of received ICMP packets. 
+&lt; Number of sent ICMP packets. 
+&lt; Number of ICMP packets with a wrong
+             type. 
+&lt; ICMP statistics. 
+&lt; Number of dropped <a href="include_tcp.h.html#TCP">TCP</a> segments. 
+&lt; Number of recived <a href="include_tcp.h.html#TCP">TCP</a> segments. 
+&lt; Number of sent <a href="include_tcp.h.html#TCP">TCP</a> segments. 
+&lt; Number of <a href="include_tcp.h.html#TCP">TCP</a> segments with a bad
+             checksum. 
+&lt; Number of <a href="include_tcp.h.html#TCP">TCP</a> segments with a bad ACK
+             number. 
+&lt; Number of recevied <a href="include_tcp.h.html#TCP">TCP</a> RST (reset) segments. 
+&lt; Number of retransmitted <a href="include_tcp.h.html#TCP">TCP</a> segments. 
+&lt; Number of dropped SYNs due to too few
+             connections was avaliable. 
+&lt; Number of SYNs for closed ports,
+             triggering a RST. 
+&lt; <a href="include_tcp.h.html#TCP">TCP</a> statistics. 
+&lt; Number of dropped UDP segments. 
+&lt; Number of recived UDP segments. 
+&lt; Number of sent UDP segments. 
+&lt; Number of UDP segments with a bad
+             checksum. 
+&lt; UDP statistics. </p>
+
+<ul>
+<li>The uIP <a href="include_tcp.h.html#TCP">TCP</a>/IP statistics.
+*</li>
+<li><p>This is the variable in which the uIP <a href="include_tcp.h.html#TCP">TCP</a>/IP statistics are gathered.</p></li>
+<li><p>The buffer size available for user data in the \ref uip_buf buffer.
+*</p></li>
+<li>This macro holds the available size for user data in the \ref</li>
+<li>uip_buf buffer. The macro is intended to be used for checking</li>
+<li>bounds of available user data.
+*</li>
+<li>Example:
+\code
+snprintf(uip<em>appdata, UIP</em>APPDATA_SIZE, "%u\n", i);
+\endcode
+*</li>
+<li><p>\hideinitializer</p></li>
+<li><p>Representation of a 48-bit <a href="include_ether.h.html#Ethernet">Ethernet</a> address.</p></li>
+<li><p>Calculate the Internet checksum over a buffer.
+*</p></li>
+<li>The Internet checksum is the one's complement of the one's</li>
+<li>complement sum of all 16-bit words in the buffer.
+*</li>
+<li>See RFC1071.
+*</li>
+<li>\param buf A pointer to the buffer over which the checksum is to be</li>
+<li>computed.
+*</li>
+<li>\param len The length of the buffer over which the checksum is to</li>
+<li>be computed.
+*</li>
+<li><p>\return The Internet checksum of the buffer.</p></li>
+<li><p>Calculate the IP header checksum of the packet header in uip_buf.
+*</p></li>
+<li>The IP header checksum is the Internet checksum of the 20 bytes of</li>
+<li>the IP header.
+*</li>
+<li>\return The IP header checksum of the IP header in the uip_buf</li>
+<li><p>buffer.</p></li>
+<li><p>Calculate the <a href="include_tcp.h.html#TCP">TCP</a> checksum of the packet in uip<em>buf and uip</em>appdata.
+*</p></li>
+<li>The <a href="include_tcp.h.html#TCP">TCP</a> checksum is the Internet checksum of data contents of the</li>
+<li><a href="include_tcp.h.html#TCP">TCP</a> segment, and a pseudo-header as defined in RFC793.
+*</li>
+<li>\return The <a href="include_tcp.h.html#TCP">TCP</a> checksum of the <a href="include_tcp.h.html#TCP">TCP</a> segment in uip_buf and pointed</li>
+<li><p>to by uip_appdata.</p></li>
+<li><p>Calculate the UDP checksum of the packet in uip<em>buf and uip</em>appdata.
+*</p></li>
+<li>The UDP checksum is the Internet checksum of data contents of the</li>
+<li>UDP segment, and a pseudo-header as defined in RFC768.
+*</li>
+<li>\return The UDP checksum of the UDP segment in uip_buf and pointed</li>
+<li><p>to by uip_appdata.</p>
+
+<p>@} </p></li>
+</ul>
+</body>
+</html>

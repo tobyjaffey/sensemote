@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Console">Console</a></h1>
+
+<p>Support for serial line debugging.</p>
+
+<h2>cons_init</h2>
+
+<pre><code>   void cons_init(void)
+</code></pre>
+
+<p>Initialise console.</p>
+
+<h2>cons_putc</h2>
+
+<pre><code>   void cons_putc(uint8_t ch)
+</code></pre>
+
+<p>Write byte to console.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>ch</code> [in]
+<ul>
+<li>Character to write</li>
+</ul></li>
+</ul>
+
+<h2>cons_puts</h2>
+
+<pre><code>   void cons_puts(const char *s)
+</code></pre>
+
+<p>Write string to console.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>s</code> [in]
+<ul>
+<li>String to write</li>
+</ul></li>
+</ul>
+
+<h2>cons_puthex8</h2>
+
+<pre><code>   void cons_puthex8(uint8_t h)
+</code></pre>
+
+<p>Write 2 digit padded hex to console.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>h</code> [in]
+<ul>
+<li>Number to write</li>
+</ul></li>
+</ul>
+
+<h2>cons_puthex32</h2>
+
+<pre><code>   void cons_puthex32(uint32_t h)
+</code></pre>
+
+<p>Write 8 digit padded hex to console.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>h</code> [in]
+<ul>
+<li>Number to write</li>
+</ul></li>
+</ul>
+
+<h2>cons_dump</h2>
+
+<pre><code>   void cons_puthex8(const uint8_t *p, uint8_t len)
+</code></pre>
+
+<p>Write an array of bytes to console as padded hex.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>p</code> [in]
+<ul>
+<li>Array of bytes</li>
+</ul></li>
+<li><code>len</code> [in]
+<ul>
+<li>Length of array</li>
+</ul></li>
+</ul>
+
+<h2>cons_getch</h2>
+
+<pre><code>   BOOLEAN cons_getch(uint8_t *ch)
+</code></pre>
+
+<p>Poll console for incoming byte.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>ch</code> [out]
+<ul>
+<li>Received byte</li>
+</ul></li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>TRUE
+Byte received</li>
+<li>FALSE
+No byte received</li>
+</ul>
+
+<h2>cons_putdec</h2>
+
+<pre><code>   void cons_putdec(int32_t i)
+</code></pre>
+
+<p>Print signed 32 bit value in decimal.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>i</code> [in]
+<ul>
+<li>Number to print</li>
+</ul></li>
+</ul>
+
+<h2>cons_putsln</h2>
+
+<pre><code>   void cons_putsln(const char *s)
+</code></pre>
+
+<p>Write string to console followed by newline.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>s</code> [in]
+<ul>
+<li>String to write</li>
+</ul></li>
+</ul>
+</body>
+</html>

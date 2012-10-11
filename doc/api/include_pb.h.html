@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Pachube">Pachube</a></h1>
+
+<p>Support for radio protocol to link with <a href="include_pb.h.html#Pachube">Pachube</a> hub. Radio packets may be lost, no automatic retransmits are made, but sequence numbers and acknowledgement callbacks may be used to build reliable systems.</p>
+
+<h2>pb_put</h2>
+
+<pre><code>   pb_put(const char *key, const char *val, uint8_t seq);
+</code></pre>
+
+<p>Send request to put <code>key</code>/<code>val</code> to <a href="include_pb.h.html#Pachube">Pachube</a>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>key</code> [in]
+<ul>
+<li>key to set</li>
+</ul></li>
+<li><code>val</code> [in]
+<ul>
+<li>value to set key to</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number, to be returned in callback</li>
+</ul></li>
+</ul>
+
+<h2>pb<em>put</em>cb</h2>
+
+<pre><code>   pb_put_cb(const __xdata char *status, uint8_t seq);
+</code></pre>
+
+<p>Callback in response to <code>pb_put</code>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>status</code> [in]
+<ul>
+<li>HTTP status code from <a href="include_pb.h.html#Pachube">Pachube</a>, 200 == success</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number</li>
+</ul></li>
+</ul>
+
+<h2>pb_get</h2>
+
+<pre><code>   pb_get(const char *key, uint8_t seq)
+</code></pre>
+
+<p>Send request to get <code>key</code> from <a href="include_pb.h.html#Pachube">Pachube</a></p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>key</code> [in]
+<ul>
+<li>key to fetch</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number, to be returned in callback</li>
+</ul></li>
+</ul>
+
+<h2>pb<em>inf</em>cb</h2>
+
+<pre><code>   pb_inf_cb(const __xdata char *key, const __xdata char *val, uint8_t seq);
+</code></pre>
+
+<p>Callback in response to <code>pb_get()</code>. Or <code>pb_sub()</code>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>key</code> [in]
+<ul>
+<li>Key</li>
+</ul></li>
+<li><code>val</code> [in]
+<ul>
+<li>Value of key</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number</li>
+</ul></li>
+</ul>
+
+<h2>pb_sub</h2>
+
+<pre><code>   pb_sub(const char *key, uint8_t seq)
+</code></pre>
+
+<p>Send request to subscribe to <code>key</code> from <a href="include_pb.h.html#Pachube">Pachube</a>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>key</code> [in]
+<ul>
+<li>key to subscribe to</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number, to be returned in callback</li>
+</ul></li>
+</ul>
+
+<h2>pb<em>sub</em>cb</h2>
+
+<pre><code>   pb_sub_cb(const __xdata char *status, uint8_t seq);
+</code></pre>
+
+<p>Callback in response to <code>pb_sub()</code>, confirming subscription.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>status</code> [in]
+<ul>
+<li>HTTP status code from <a href="include_pb.h.html#Pachube">Pachube</a>, "200" == OK</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number</li>
+</ul></li>
+</ul>
+
+<h2>pb_unsub</h2>
+
+<pre><code>   pb_unsub(const char *key, uint8_t seq)
+</code></pre>
+
+<p>Send request to unsubscribe from <code>key</code> from <a href="include_pb.h.html#Pachube">Pachube</a>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>key</code> [in]
+<ul>
+<li>key to unsubscribe from</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number, to be returned in callback</li>
+</ul></li>
+</ul>
+
+<h2>pb<em>unsub</em>cb</h2>
+
+<pre><code>   pb_unsub_cb(const __xdata char *status, uint8_t seq);
+</code></pre>
+
+<p>Callback in response to <code>pb_unsub()</code>, confirming unsubscription.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>status</code> [in]
+<ul>
+<li>HTTP status code from <a href="include_pb.h.html#Pachube">Pachube</a>, "200" == OK</li>
+</ul></li>
+<li><code>seq</code> [in]
+<ul>
+<li>Sequence number</li>
+</ul></li>
+</ul>
+
+<h2>pb<em>tx</em>cb</h2>
+
+<pre><code>   pb_tx_cb(void)
+</code></pre>
+
+<p>Callback made after successfully sending a packet to <a href="include_pb.h.html#Pachube">Pachube</a>. </p>
+
+<h2>pb_poll</h2>
+
+<pre><code>   pb_poll(void)
+</code></pre>
+
+<p>Send a request to receive outstanding data.</p>
+</body>
+</html>

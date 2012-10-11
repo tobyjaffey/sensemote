@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="CC Tiny Loader">CC Tiny Loader</a></h1>
+
+<p>CCTL is a serial bootloader for the Chipcon CC1110/CC1111 using only one 1KB page of flash.
+It allows update of the the microcontroller firmware over its serial port.</p>
+
+<p>The bootloader consists of two components, a piece of firmware that is flashed
+onto the device and a utility for downloading code and manipulating the
+flash memory. The client program, <code>cctl-prog</code> runs on Linux, OSX/Darwin and Windows.</p>
+
+<h2>Authors</h2>
+
+<p>Joby Taffey (c) 2012 <a href="&#109;&#97;&#x69;&#108;&#x74;&#x6F;:&#x6A;&#114;&#116;&#x2D;c&#x63;&#x74;&#x6C;&#64;&#x68;&#x6F;&#100;&#103;&#x65;&#x70;&#105;&#103;&#46;&#111;&#x72;&#x67;">&#x6A;&#114;&#116;&#x2D;c&#x63;&#x74;&#x6C;&#64;&#x68;&#x6F;&#100;&#103;&#x65;&#x70;&#105;&#103;&#46;&#111;&#x72;&#x67;</a></p>
+
+<p>Portions originally from CC Bootloader, Fergus Noble (c) 2011</p>
+
+<h2>Usage</h2>
+
+<p>The first step is to flash your device with the <code>cctl.hex</code> firmware file. A prebuilt version <code>prebuilt-cctl.hex</code> is provided.</p>
+
+<p>Once the device is flashed with this firmware it will identify itself over the serial interface with the message "CCTL" on reset.</p>
+
+<p>The microcontroller is configured for 115200, 8N1 transmitting on P0.3, receiving on P0.2.
+Note that the CC111x is not 5v tolerant, so be sure to use a 3v serial adapter.</p>
+
+<p>You can now use cctl-prog to download your payload code.
+A prebuilt version of cctl-prog.exe is provided for Windows. For Linux or OSX, type "make".</p>
+
+<p>For usage instructions, run cctl-prog with no arguments:</p>
+
+<p><code>./cctl-prog</code></p>
+
+<pre><code>ChipCon Tiny Loader Programmer
+cctl-prog -d /dev/ttyXYZ [-c] [-f file.hex]
+--help           -h          This help
+--console        -c          Connect console to serial port on device
+--flash=file.hex -f file.hex Reflash device with intel hex file
+--timeout=n      -t n        Search for bootload string for n seconds
+</code></pre>
+
+<p>If both <code>--console</code> and <code>--flash</code> are specified, then the device will be reflashed first, then the console will connect.</p>
+
+<p>Before flashing, <code>cctl-prog</code> sends the string "+++", which firmware can detect
+and reset automatically.</p>
+
+<p>Preparing your user code for usage with the bootloader is very simple. All you
+need to do is set your linker to start the code section at 0x400. For an
+example of this see the <code>Makefile</code> file in the <code>example_payload</code> subdirectory.
+This is the relevant line:</p>
+
+<p><code>LDFLAGS_FLASH = ... --code-loc 0x400 ...</code></p>
+
+<h2>Building</h2>
+
+<p>This requires <a class="external" href="http://sdcc.sourceforge.net/">sdcc</a> (Small Device C Compiler).
+Then it should be as simple as issuing</p>
+
+<p><code>make</code></p>
+
+<p>from the root directory of the project.</p>
+
+<p>The code has been tested with SDCC version 3.0.0</p>
+
+<h2>Serial protocol</h2>
+
+<p>CCTL uses a custom binary serial protocol, running at 115200bps, 8 bits, no party, 1 stop bit.</p>
+
+<p>On reset, the bootloader prints "\r\nCCTL\r\n" followed by "B" up to 8 times with a delay between each.
+If the bootloader receives any character before printing "B" 8 times, it will enter upgrade mode.</p>
+
+<p>If no character is received, the bootloader will attempt to launch user code from 0x400.</p>
+
+<p>The bootloader enables the watchdog with a 1s timeout while running. It does not engage the hardware watchdog when jumping to user code (as the watchdog cannot be disabled making it incompatible with applications which remain in deep sleep for long periods).</p>
+
+<p>Once in upgrade mode, the bootloader expects to receive at least one character per second, else it will reset using the hardware watchdog.</p>
+
+<p>In upgrade mode, the following commands are available:</p>
+
+<h3>Jump to user code</h3>
+
+<p>Jumps to user code. On failure, the device will reset.</p>
+
+<p>-> <code>j</code></p>
+
+<h2>Erase page</h2>
+
+<p>Erase a 1KB page of flash. On completion, <code>\0</code> is sent</p>
+
+<p>-> <code>e</code>, <code>uint8_t page</code> (0-31)</p>
+
+<p>&lt;- <code>\0</code></p>
+
+<h2>Read page</h2>
+
+<p>Read a 1KB page from flash. Sends 1024 raw bytes. On completion, '\0' is sent</p>
+
+<p>-> <code>r</code>, <code>uint8_t page</code> (0-31)</p>
+
+<p>&lt;- <code>uint8_t data[1024]</code>, <code>\0</code></p>
+
+<h2>Load page</h2>
+
+<p>Loads 1KB page from serial into a RAM buffer. Receives 1024 raw bytes. On completion, '\0' is sent</p>
+
+<p>-> <code>l</code>, <code>uint8_t data[1024]</code></p>
+
+<p>&lt;- <code>\0</code></p>
+
+<h2>Program page</h2>
+
+<p>Program a 1KB page of flash from RAM buffer. On completion, <code>\0</code> is sent</p>
+
+<p>-> <code>p</code>, <code>uint8_t page</code> (0-31)</p>
+
+<p>&lt;- <code>\0</code></p>
+
+<h2>Interrupts</h2>
+
+<p>CCTL resides in the first flash page, 0x0000 to 0x0400. On reset, the CC1110 begins executing from address 0x0000 where it finds the CCTL reset vector.</p>
+
+<p>CCTL provides a vector table which jumps to the relevant vector in application code at 0x400 + offset.</p>
+
+<p>For interrupts which are used by both CCTL and application code, CCTL looks at the F1 user flag in the PSW register. When this flag is 0, the bootloader isr is called, when 1, the application isr is called.</p>
+
+<p>Application code should not modify PSW.F1.</p>
+
+<h2>How do I get CCTL into my flash?</h2>
+
+<p>The CC111x is programmed with a <a href="include_spi.h.html#SPI">SPI</a> like protocol using a hardware programmer. 
+The protocol is given in detail in http://focus.ti.com/lit/ug/swra124/swra124.pdf</p>
+
+<p>(CCTL is placed in the flash using this protocol, it is different to the serial protocol).</p>
+
+<p>Official hardware programmer</p>
+
+<ul>
+<li>TI's CC-Debugger http://www.ti.com/tool/cc-debugger (Windows only)</li>
+</ul>
+
+<p>Third-party hardware programmers</p>
+
+<ul>
+<li>Travis Goodspeed's GoodFET http://goodfet.sourceforge.net/</li>
+</ul>
+
+<p>Open source implementations of protcol</p>
+
+<ul>
+<li>GoodFET (python) http://goodfet.sourceforge.net/clients/goodfet.cc/</li>
+<li>Teensy (C) https://github.com/jkerdels/open_imme/tree/master/tools/teensy-prog</li>
+<li>Linux GPIO sysfs (C) https://github.com/ffainelli/cc2530prog</li>
+</ul>
+
+<h2>Building for Windows</h2>
+
+<p><code>cctl-prog</code> is currently built for Windows using the mingw32 cross compiler from Linux.</p>
+
+<pre><code>make -f Makefile.mingw32
+</code></pre>
+
+<p>The Linux/OSX version of <code>cctl-prog</code> compiles and runs under cygwin.</p>
+
+<p>Run the createdevices.sh script in cygwin to populate /dev.</p>
+
+<p>In cygwin COM ports are available as /dev/ttySX.
+BEWARE, THEY ARE NUMBERED FROM 0
+ie. COM7 = /dev/ttyS6</p>
+</body>
+</html>

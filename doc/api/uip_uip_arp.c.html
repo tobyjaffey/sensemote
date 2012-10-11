@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup uip</li>
+<li><p>@{</p></li>
+<li><p>\defgroup uiparp uIP Address Resolution Protocol</p></li>
+<li>@{
+*</li>
+<li>The Address Resolution Protocol ARP is used for mapping between IP</li>
+<li>addresses and link level addresses such as the <a href="include_ether.h.html#Ethernet">Ethernet</a> MAC</li>
+<li>addresses. ARP uses broadcast queries to ask for the link level</li>
+<li>address of a known IP address and the host which is configured with</li>
+<li>the IP address for which the query was meant, will respond with its</li>
+<li>link level address.
+*</li>
+<li><p>\note This ARP implementation only supports <a href="include_ether.h.html#Ethernet">Ethernet</a>.</p></li>
+<li><p>\file</p></li>
+<li>Implementation of the ARP Address Resolution Protocol.</li>
+<li><p>\author Adam Dunkels <a href="&#x6D;&#x61;&#105;&#108;&#116;o:&#x61;&#100;&#97;&#109;&#64;&#100;&#117;&#110;&#107;&#x65;&#108;&#x73;&#x2E;&#99;&#x6F;&#x6D;">&#x61;&#100;&#97;&#109;&#64;&#100;&#117;&#110;&#107;&#x65;&#108;&#x73;&#x2E;&#99;&#x6F;&#x6D;</a>
+*</p></li>
+<li><p>Initialize the ARP module.
+*</p></li>
+<li><p>Periodic ARP processing function.
+*</p></li>
+<li>This function performs periodic timer processing in the ARP module</li>
+<li>and should be called at regular intervals. The recommended interval</li>
+<li><p>is 10 seconds between the calls.
+*</p></li>
+<li><p>ARP processing for incoming IP packets
+*</p></li>
+<li>This function should be called by the device driver when an IP</li>
+<li>packet has been received. The function will check if the address is</li>
+<li>in the ARP cache, and if so the ARP cache entry will be</li>
+<li>refreshed. If no ARP cache entry was found, a new one is created.
+*</li>
+<li>This function expects an IP packet with a prepended <a href="include_ether.h.html#Ethernet">Ethernet</a> header</li>
+<li>in the uip_buf[] buffer, and the length of the packet in the global</li>
+<li><p>variable uip_len.</p></li>
+<li><p>ARP processing for incoming ARP packets.
+*</p></li>
+<li>This function should be called by the device driver when an ARP</li>
+<li>packet has been received. The function will act differently</li>
+<li>depending on the ARP packet type: if it is a reply for a request</li>
+<li>that we previously sent out, the ARP cache will be filled in with</li>
+<li>the values from the ARP reply. If the incoming ARP packet is an ARP</li>
+<li>request for our IP address, an ARP reply packet is created and put</li>
+<li>into the uip_buf[] buffer.
+*</li>
+<li>When the function returns, the value of the global variable uip_len</li>
+<li>indicates whether the device driver should send out a packet or</li>
+<li>not. If uip<em>len is zero, no packet should be sent. If uip</em>len is</li>
+<li>non-zero, it contains the length of the outbound packet that is</li>
+<li>present in the uip_buf[] buffer.
+*</li>
+<li>This function expects an ARP packet with a prepended <a href="include_ether.h.html#Ethernet">Ethernet</a></li>
+<li>header in the uip_buf[] buffer, and the length of the packet in the</li>
+<li><p>global variable uip_len.</p></li>
+<li><p>Prepend <a href="include_ether.h.html#Ethernet">Ethernet</a> header to an outbound IP packet and see if we need</p></li>
+<li>to send out an ARP request.
+*</li>
+<li>This function should be called before sending out an IP packet. The</li>
+<li>function checks the destination IP address of the IP packet to see</li>
+<li>what <a href="include_ether.h.html#Ethernet">Ethernet</a> MAC address that should be used as a destination MAC</li>
+<li>address on the <a href="include_ether.h.html#Ethernet">Ethernet</a>.
+*</li>
+<li>If the destination IP address is in the local network (determined</li>
+<li>by logical ANDing of netmask and our IP address), the function</li>
+<li>checks the ARP cache to see if an entry for the destination IP</li>
+<li>address is found. If so, an <a href="include_ether.h.html#Ethernet">Ethernet</a> header is prepended and the</li>
+<li>function returns. If no ARP cache entry is found for the</li>
+<li>destination IP address, the packet in the uip_buf[] is replaced by</li>
+<li>an ARP request packet for the IP address. The IP packet is dropped</li>
+<li>and it is assumed that they higher level protocols (e.g., <a href="include_tcp.h.html#TCP">TCP</a>)</li>
+<li>eventually will retransmit the dropped packet.
+*</li>
+<li>If the destination IP address is not on the local network, the IP</li>
+<li>address of the default router is used instead.
+*</li>
+<li>When the function returns, a packet is present in the uip_buf[]</li>
+<li>buffer, and the length of the packet is in the global variable</li>
+<li><p>uip_len.</p>
+
+<p>@} 
+@} </p></li>
+</ul>
+</body>
+</html>

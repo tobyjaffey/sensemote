@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="SPI">SPI</a></h1>
+
+<p>Support for <a href="include_spi.h.html#SPI">SPI</a> master.</p>
+
+<h2>spi_init</h2>
+
+<pre><code>   void spi_init(void)
+</code></pre>
+
+<p>Initialise <a href="include_spi.h.html#SPI">SPI</a> pins.</p>
+
+<h2>spi8</h2>
+
+<pre><code>   uint8_t spi8(uint8_t c)
+</code></pre>
+
+<p>Transfer 8 bits of data in and out of <a href="include_spi.h.html#SPI">SPI</a> bus.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>c</code> [in]
+<ul>
+<li>Data to transfer</li>
+</ul></li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>8 bit data received from slave</li>
+</ul>
+</body>
+</html>

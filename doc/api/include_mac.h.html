@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Radio MAC">Radio MAC</a></h1>
+
+<p>Radio Medium Access Controller.
+There are two roles in the MAC, coordinator and device.</p>
+
+<h2>Coordinator</h2>
+
+<p>When not transmitting, the coordinator keeps its radio in receive mode. On receiving a packet with the <code>MAC_TYPE_POLL</code> bit set, the coordinator responds rapidly with a packet with the <code>MAC_TYPE_POLLACK</code> bit set. Coordinators never sleep.</p>
+
+<h2>Device</h2>
+
+<p>When not transmitting or receiving, the device stays asleep with an idle radio. Periodically, devices wake up and transmit a packet. Optionally, the packet may include the <code>MAC_TYPE_POLL</code> bit. If this bit is set, then the device enters receive mode and waits for a response from the coordinator. If no packet was pending, it will receive an empty packet with the <code>MAC_TYPE_POLLACK</code> bit set.</p>
+
+<h2>mac_init</h2>
+
+<pre><code>   void mac_init(void)
+</code></pre>
+
+<p>Initialise MAC.</p>
+
+<h2>mac_tick</h2>
+
+<pre><code>   void mac_tick(void)
+</code></pre>
+
+<p>Advance MAC state. Should be called regularly.</p>
+
+<h2>mac_1hz</h2>
+
+<pre><code>   void mac_1hz(void)
+</code></pre>
+
+<p>Advance MAC state. Should be called at 1Hz.</p>
+
+<h2>mac_rx_cb</h2>
+
+<h3>Coordinator</h3>
+
+<pre><code>   void mac_rx_cb(const __xdata uint8_t *eui64, const __xdata uint8_t *pkt, BOOLEAN encrypted)
+</code></pre>
+
+<h3>Device</h3>
+
+<pre><code>   void mac_rx_cb(const __xdata uint8_t *pkt, BOOLEAN encrypted)
+</code></pre>
+
+<p>Callback to user to indicate packet reception by MAC.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>eui64</code> [in] (coordinator only)
+<ul>
+<li>EUI64 of device</li>
+</ul></li>
+<li><code>pkt</code> [in]
+<ul>
+<li>Received packet</li>
+</ul></li>
+<li><code>encrypted</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Packet is encrypted</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Packet is plaintext</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>mac_tx_cb</h2>
+
+<h3>Coordinator</h3>
+
+<pre><code>   void mac_tx_cb(const __xdata uint8_t *eui64, const __xdata uint8_t *pkt, BOOLEAN wasPolledFor, uint8_t local_seq)
+</code></pre>
+
+<h3>Device</h3>
+
+<pre><code>   void mac_tx_cb(const __xdata uint8_t *pkt)
+</code></pre>
+
+<p>Callback to user to indicate packet transmission by MAC.</p>
+
+<h3>Parameters (coordinator)</h3>
+
+<ul>
+<li><code>eui64</code> [in]
+<ul>
+<li>EUI64 of device</li>
+</ul></li>
+<li><code>pkt</code> [in]
+<ul>
+<li>Transmitted packet</li>
+</ul></li>
+<li><code>wasPolledFor</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Packet was polled for by a device and transmitted</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Packet timed out</li>
+</ul></li>
+</ul></li>
+<li><p><code>localSeq</code> [in]</p>
+
+<ul>
+<li>Sequence number for this MAC transmission (matches value passed to <code>mac_tx</code>)
+<h3>Parameters (device)</h3></li>
+</ul></li>
+<li><p><code>pkt</code> [in]</p>
+
+<ul>
+<li>Transmitted packet</li>
+</ul></li>
+</ul>
+
+<h2>mac_tx (coordinator)</h2>
+
+<pre><code>   __xdata uint8_t *mac_tx(const uint8_t *eui64, uint8_t length, BOOLEAN encrypted, uint8_t local_seq)
+</code></pre>
+
+<p>Enqueue packet for sending.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>eui64</code> [in]
+<ul>
+<li>EUI64 of device</li>
+</ul></li>
+<li><code>length</code> [in]
+<ul>
+<li>length of packet to be transmitted</li>
+</ul></li>
+<li><code>encrypted</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Packet is encrypted</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Packet is plaintext</li>
+</ul></li>
+</ul></li>
+<li><code>localSeq</code> [in]
+<ul>
+<li>Sequence number for this MAC transmission (matches value passed into <code>mac_tx_cb</code>)</li>
+</ul></li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Buffer in which to write outgoing packet</li>
+</ul>
+
+<h2>mac_tx (device)</h2>
+
+<pre><code>   void mac_tx(__xdata uint8_t *payloadPkt, BOOLEAN encrypted, BOOLEAN alsoPoll)
+</code></pre>
+
+<p>Send packet immediately.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>payloadPkt</code> [in]
+<ul>
+<li>packet to be transmitted</li>
+</ul></li>
+<li><code>encrypted</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Packet is encrypted</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Packet is plaintext</li>
+</ul></li>
+</ul></li>
+<li><code>alsoPoll</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li>Poll coordinator for packets</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Do not poll coordinator for packets</li>
+</ul></li>
+</ul></li>
+</ul>
+</body>
+</html>

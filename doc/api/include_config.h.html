@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Config">Config</a></h1>
+
+<p>Utilities for fetching configuration data from the flash.</p>
+
+<h2>config_init</h2>
+
+<pre><code>   void config_init(void)
+</code></pre>
+
+<p>Initialise config system.</p>
+
+<h2>config_cmdline</h2>
+
+<pre><code>   void config_cmdline(int argc, char *argv[])
+</code></pre>
+
+<p>Parse config settings from command line for POSIX builds.</p>
+
+<h2>config_getMagic</h2>
+
+<pre><code>   uint8_t config_getMagic(void)
+</code></pre>
+
+<p>Get magic value (MAGIC<em>OK) from start of config area. If != MAGIC</em>OK, config area is uninitialised.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>1 byte of magic</li>
+</ul>
+
+<h2>config_getPort</h2>
+
+<pre><code>   uint16_t config_getPort(void)
+</code></pre>
+
+<p>Get port to connect to network server on.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>port number</li>
+</ul>
+
+<h2>config_getHost</h2>
+
+<pre><code>   const char *config_getHost(void)
+</code></pre>
+
+<p>Get host to connect to network server on.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>hostname</li>
+</ul>
+
+<h2>config_getMAC</h2>
+
+<pre><code>   const uint8_t *config_getMAC(void)
+</code></pre>
+
+<p>Get ethernet MAC address.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>6 byte MAC address</li>
+</ul>
+
+<h2>config_getEUI64</h2>
+
+<pre><code>   const uint8_t *config_getEUI64(void)
+</code></pre>
+
+<p>Get radio EUI64 address.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>8 byte EUI64 address</li>
+</ul>
+
+<h2>config_getKeyEnc</h2>
+
+<pre><code>   const uint8_t *config_getKeyEnc(void)
+</code></pre>
+
+<p>Get packet encryption key</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>16 byte AES-128 key</li>
+</ul>
+
+<h2>config_getKeyMac</h2>
+
+<pre><code>   const uint8_t *config_getKeyMac(void)
+</code></pre>
+
+<p>Get packet Message Authentication Code key</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>16 byte AES-128 key</li>
+</ul>
+
+<h2>config_getApiKey</h2>
+
+<pre><code>   const char *config_getApiKey(void)
+</code></pre>
+
+<p>Get api key for network service</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>apikey</li>
+</ul>
+
+<h2>config_getFeedId</h2>
+
+<pre><code>   const char *config_getFeedId(void)
+</code></pre>
+
+<p>Get feed id for network service</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>feedid</li>
+</ul>
+</body>
+</html>

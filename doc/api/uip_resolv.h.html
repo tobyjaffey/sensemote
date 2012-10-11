@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup resolv</li>
+<li><p>@{</p></li>
+<li><p>\file</p></li>
+<li>DNS resolver code header file.</li>
+<li><p>\author Adam Dunkels <a href="&#x6D;&#x61;&#x69;&#x6C;&#116;&#111;:&#97;d&#x61;&#109;&#64;&#x64;&#117;&#110;&#107;&#101;&#108;&#x73;&#46;&#99;&#111;&#x6D;">&#97;d&#x61;&#109;&#64;&#x64;&#117;&#110;&#107;&#101;&#108;&#x73;&#46;&#99;&#111;&#x6D;</a></p></li>
+<li><p>Callback function which is called when a hostname is found.
+*</p></li>
+<li>This function must be implemented by the module that uses the DNS</li>
+<li>resolver. It is called when a hostname is found, or when a hostname</li>
+<li>was not found.
+*</li>
+<li>\param name A pointer to the name that was looked up.  \param</li>
+<li>ipaddr A pointer to a 4-byte array containing the IP address of the</li>
+<li><p>hostname, or NULL if the hostname could not be found.</p>
+
+<p>@} </p></li>
+</ul>
+</body>
+</html>

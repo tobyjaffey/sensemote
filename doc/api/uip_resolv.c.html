@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup apps</li>
+<li><p>@{</p></li>
+<li><p>\defgroup resolv DNS resolver</p></li>
+<li>@{
+*</li>
+<li>The uIP DNS resolver functions are used to lookup a hostname and</li>
+<li>map it to a numerical IP address. It maintains a list of resolved</li>
+<li>hostnames that can be queried with the resolv_lookup()</li>
+<li>function. New hostnames can be resolved using the resolv_query()</li>
+<li>function.
+*</li>
+<li>When a hostname has been resolved (or found to be non-existant),</li>
+<li>the resolver code calls a callback function called resolv_found()</li>
+<li><p>that must be implemented by the module that uses the resolver.</p></li>
+<li><p>\file</p></li>
+<li>DNS host name to IP address resolver.</li>
+<li>\author Adam Dunkels <a href="&#x6D;&#97;&#105;&#x6C;&#x74;&#x6F;:&#97;d&#x61;m&#64;&#x64;&#x75;n&#107;&#x65;&#x6C;&#115;&#x2E;&#99;&#111;&#109;">&#97;d&#x61;m&#64;&#x64;&#x75;n&#107;&#x65;&#x6C;&#115;&#x2E;&#99;&#111;&#109;</a>
+*</li>
+<li><p>This file implements a DNS host name to IP address resolver.</p>
+
+<p>\internal The maximum number of retries when asking for a name. 
+\internal The DNS message header. 
+\internal The DNS answer message structure. 
+\internal</p></li>
+<li>Walk through a compact encoded DNS name and return the end of it.
+*</li>
+<li><p>\return The end of the name.</p>
+
+<p>\internal</p></li>
+<li>Runs through the list of names to see if there are any that have</li>
+<li><p>not yet been queried and, if so, sends out a query.</p>
+
+<p>\internal</p></li>
+<li><p>Called when new UDP data arrives.</p>
+
+<p>\internal</p></li>
+<li><p>The main UDP function.</p></li>
+<li><p>Queues a name so that a question for the name will be sent out.
+*</p></li>
+<li><p>\param name The hostname that is to be queried.</p></li>
+<li><p>Look up a hostname in the array of known hostnames.
+*</p></li>
+<li>\note This function only looks in the internal array of known</li>
+<li>hostnames, it does not send out a query for the hostname if none</li>
+<li>was found. The function resolv_query() can be used to send a query</li>
+<li>for a hostname.
+*</li>
+<li>\return A pointer to a 4-byte representation of the hostname's IP</li>
+<li>address, or NULL if the hostname was not found in the array of</li>
+<li><p>hostnames.</p></li>
+<li><p>Obtain the currently configured DNS server.
+*</p></li>
+<li>\return A pointer to a 4-byte representation of the IP address of</li>
+<li>the currently configured DNS server or NULL if no DNS server has</li>
+<li><p>been configured.</p></li>
+<li><p>Configure which DNS server to use for queries.
+*</p></li>
+<li>\param dnsserver A pointer to a 4-byte representation of the IP</li>
+<li><p>address of the DNS server to be configured.</p></li>
+<li><p>Initalize the resolver.</p>
+
+<p>@} 
+@} </p></li>
+</ul>
+</body>
+</html>

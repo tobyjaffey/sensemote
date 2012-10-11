@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="ADC">ADC</a></h1>
+
+<p>Support for Analogue to Digial Converter</p>
+
+<h2>adc_init</h2>
+
+<pre><code>   void adc_init(void)
+</code></pre>
+
+<p>Initialise <a href="include_adc.h.html#ADC">ADC</a> hardware.</p>
+
+<h2>adc_read</h2>
+
+<pre><code>   uint16_t adc_read(uint8_t channel, BOOLEAN externalRef);
+</code></pre>
+
+<p>Poll a single <a href="include_adc.h.html#ADC">ADC</a> channel and perform a single conversion (~132&mu;S).</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>channel</code> [in]
+<ul>
+<li><a href="include_adc.h.html#ADC">ADC</a> channel to read</li>
+</ul></li>
+<li><code>externalRef</code> [in]
+<ul>
+<li>Use external voltage reference</li>
+</ul></li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>12bit <a href="include_adc.h.html#ADC">ADC</a> reading</li>
+</ul>
+
+<h2>adc_readBattery</h2>
+
+<pre><code>   uint16_t adc_readBattery(void)
+</code></pre>
+
+<p>Poll battery voltage.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Battery voltage in mV.</li>
+</ul>
+</body>
+</html>

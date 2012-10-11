@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup webclient</li>
+<li><p>@{</p></li>
+<li><p>\file</p></li>
+<li>Header file for the HTTP client.</li>
+<li><p>\author Adam Dunkels <a href="&#x6D;&#x61;&#x69;&#108;&#116;o:&#97;&#x64;&#97;&#109;&#64;&#100;&#117;&#110;&#107;&#101;&#x6C;&#x73;.&#99;&#x6F;&#x6D;">&#97;&#x64;&#97;&#109;&#64;&#100;&#117;&#110;&#107;&#101;&#x6C;&#x73;.&#99;&#x6F;&#x6D;</a></p></li>
+<li><p>Callback function that is called from the webclient code when HTTP</p></li>
+<li>data has been received.
+*</li>
+<li>This function must be implemented by the module that uses the</li>
+<li>webclient code. The function is called from the webclient module</li>
+<li>when HTTP data has been received. The function is not called when</li>
+<li>HTTP headers are received, only for the actual data.
+*</li>
+<li>\note This function is called many times, repetedly, when data is</li>
+<li>being received, and not once when all data has been received.
+*</li>
+<li>\param data A pointer to the data that has been received.</li>
+<li><p>\param len The length of the data that has been received.</p></li>
+<li><p>Callback function that is called from the webclient code when the</p></li>
+<li>HTTP connection has been connected to the web server.
+*</li>
+<li>This function must be implemented by the module that uses the</li>
+<li><p>webclient code.</p></li>
+<li><p>Callback function that is called from the webclient code if the</p></li>
+<li>HTTP connection to the web server has timed out.
+*</li>
+<li>This function must be implemented by the module that uses the</li>
+<li><p>webclient code.</p></li>
+<li><p>Callback function that is called from the webclient code if the</p></li>
+<li>HTTP connection to the web server has been aborted by the web</li>
+<li>server.
+*</li>
+<li>This function must be implemented by the module that uses the</li>
+<li><p>webclient code.</p></li>
+<li><p>Callback function that is called from the webclient code when the</p></li>
+<li>HTTP connection to the web server has been closed.
+*</li>
+<li>This function must be implemented by the module that uses the</li>
+<li><p>webclient code.</p></li>
+<li><p>Initialize the webclient module.</p></li>
+<li><p>Open an HTTP connection to a web server and ask for a file using</p></li>
+<li>the GET method.
+*</li>
+<li>This function opens an HTTP connection to the specified web server</li>
+<li>and requests the specified file using the GET method. When the HTTP</li>
+<li>connection has been connected, the webclient_connected() callback</li>
+<li>function is called and when the HTTP data arrives the</li>
+<li>webclient_datahandler() callback function is called.
+*</li>
+<li>The callback function webclient_timedout() is called if the web</li>
+<li>server could not be contacted, and the webclient_aborted() callback</li>
+<li>function is called if the HTTP connection is aborted by the web</li>
+<li>server.
+*</li>
+<li>When the HTTP request has been completed and the HTTP connection is</li>
+<li>closed, the webclient_closed() callback function will be called.
+*</li>
+<li>\note If the function is passed a host name, it must already be in</li>
+<li>the resolver cache in order for the function to connect to the web</li>
+<li>server. It is therefore up to the calling module to implement the</li>
+<li>resolver calls and the signal handler used for reporting a resolv</li>
+<li>query answer.
+*</li>
+<li>\param host A pointer to a string containing either a host name or</li>
+<li>a numerical IP address in dotted decimal notation (e.g., 192.168.23.1).
+*</li>
+<li>\param port The port number to which to connect, in host byte order.
+*</li>
+<li>\param file A pointer to the name of the file to get.
+*</li>
+<li>\retval 0 if the host name could not be found in the cache, or</li>
+<li>if a <a href="include_tcp.h.html#TCP">TCP</a> connection could not be created.
+*</li>
+<li><p>\retval 1 if the connection was initiated.</p></li>
+<li><p>Close the currently open HTTP connection.</p></li>
+<li><p>Obtain the MIME type of the current HTTP data stream.
+*</p></li>
+<li>\return A pointer to a string contaning the MIME type. The string</li>
+<li><p>may be empty if no MIME type was reported by the web server.</p></li>
+<li><p>Obtain the filename of the current HTTP data stream.
+*</p></li>
+<li>The filename of an HTTP request may be changed by the web server,</li>
+<li>and may therefore not be the same as when the original GET request</li>
+<li>was made with webclient_get(). This function is used for obtaining</li>
+<li>the current filename.
+*</li>
+<li><p>\return A pointer to the current filename.</p></li>
+<li><p>Obtain the hostname of the current HTTP data stream.
+*</p></li>
+<li>The hostname of the web server of an HTTP request may be changed</li>
+<li>by the web server, and may therefore not be the same as when the</li>
+<li>original GET request was made with webclient_get(). This function</li>
+<li>is used for obtaining the current hostname.
+*</li>
+<li><p>\return A pointer to the current hostname.</p></li>
+<li><p>Obtain the port number of the current HTTP data stream.
+*</p></li>
+<li>The port number of an HTTP request may be changed by the web</li>
+<li>server, and may therefore not be the same as when the original GET</li>
+<li>request was made with webclient_get(). This function is used for</li>
+<li>obtaining the current port number.
+*</li>
+<li><p>\return The port number of the current HTTP data stream, in host byte order.</p>
+
+<p>@} </p></li>
+</ul>
+</body>
+</html>

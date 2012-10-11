@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="BuildSystem">BuildSystem</a></h1>
+
+<h2>Apps</h2>
+
+<p>All apps are in the folder <code>apps</code>.</p>
+
+<p>Each application is contained in a folder with the name of the app, eg. <code>sniffapp</code>.
+Inside this folder are:</p>
+
+<ul>
+<li><code>sniffapp.mk</code> the Makefile</li>
+<li><code>sniffapp.c</code> the entry point for the app</li>
+</ul>
+
+<h3>Building an app</h3>
+
+<p>All apps are built by invoking the master <code>Makefile</code>.</p>
+
+<pre><code>    make APP=sniffapp
+    make APP=sniffapp clean
+</code></pre>
+
+<p>To flash a device with an app, using the CCTL bootloader.</p>
+
+<pre><code>    make APP=sniffapp install
+</code></pre>
+
+<p>By default all apps build for CC1110. However, they can all be built for the host PC using <code>PLATFORM=POSIX</code>. The <code>install</code> target will run the application. Radio networking is simulated with IP multicast.</p>
+
+<pre><code>    make APP=sniffapp PLATFORM=POSIX install
+</code></pre>
+
+<p>Valid <code>PLATFORM</code>s are <code>CC1110</code> and <code>POSIX</code>.</p>
+
+<h3>App Makefile</h3>
+
+<p>Each app contains a custom Makefile fragment which is included by <code>Makefile</code> during the build process.
+The job of the app Makefile is to select features for the firmware and set compile time options. A typical app Makefile might say</p>
+
+<pre><code>    CONS_ENABLED=Y
+    ATTR_ENABLED=Y
+    BUTTONS_ENABLED=Y
+    LED_P1_1_ENABLED=Y
+    CRYSTAL32KHZ_ENABLED=Y
+    SLEEP_ENABLED=Y
+    MAC_ENABLED=Y
+    ADC_ENABLED=Y
+</code></pre>
+
+<p>Where possible, firmware features are selected at compile time. Each feature is select by a line in the app Makefile. These are then processed in <code>Makefile.app</code>. For example, the <code>SLEEP_ENABLED</code> option pulls in object code and sets a preprocessor definition.</p>
+
+<pre><code>    ifeq ($(SLEEP_ENABLED),Y)
+    LIBS += os/sleep.$(OBJEXT)
+    CFLAGS += -DSLEEP_ENABLED
+    endif
+</code></pre>
+
+<p>The app Makefile can pull in extra source files. For example, to add the file <code>foo.c</code> to the build add the following to the app Makefile:</p>
+
+<pre><code>    LIBS += $(APP)/foo.$(OBJEXT)
+</code></pre>
+
+<h2>Patching and config</h2>
+
+<p>Each device has a small config area at the top of flash, the layout is in <code>flashvars.h</code>. After building the application, the config area will be patched with settings taken from <code>config.mk</code>.</p>
+</body>
+</html>

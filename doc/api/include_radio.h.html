@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Packet Radio">Packet Radio</a></h1>
+
+<p>Support for CC1110 packet radio.
+250kbaud, 868MHz, GFSK. Every packet has a length byte first and is transmitted with a 2 byte CRC.</p>
+
+<h2>radio_init</h2>
+
+<pre><code>   void radio_init(void)
+</code></pre>
+
+<p>Initialise radio subsystem.</p>
+
+<h2>radio_tick</h2>
+
+<pre><code>   void radio_tick(void)
+</code></pre>
+
+<p>Advance radio subsystem. Must be called continuously.</p>
+
+<h2>radio_received</h2>
+
+<pre><code>   void radio_received(__xdata uint8_t *pkt)
+</code></pre>
+
+<p>Callback made to user on reception of a complete packet.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>pkt</code> [in]
+<ul>
+<li>Received radio packet, length byte first</li>
+</ul></li>
+</ul>
+
+<h2>radio_tx</h2>
+
+<pre><code>   void radio_tx(__xdata uint8_t *pkt);
+</code></pre>
+
+<p>Copies <code>pkt</code> to transmit buffer and begins sending. User may poll for transmit readiness by calling <code>radio_txComplete</code>. After transmission is complete, radio will move to idle state and <code>radio_idle_cb</code> will be made to user.
+Calling <code>radio_tx</code> while a packet is in flight will cause undefined behaviour.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>pkt</code> [in]
+<ul>
+<li>radio packet, length byte first</li>
+</ul></li>
+</ul>
+
+<h2>radio_rx</h2>
+
+<pre><code>   void radio_rx(void)
+</code></pre>
+
+<p>Put radio into receive mode. After receiving a packet, the radio will move to the idle state and <code>radio_idle_cb</code> will be made to user.</p>
+
+<h2>radio_idle</h2>
+
+<pre><code>   void radio_idle(void)
+</code></pre>
+
+<p>Move radio to the idle state, calls <code>radio_idle_cb</code> in the user.</p>
+
+<h2>radio_txComplete</h2>
+
+<pre><code>   BOOLEAN radio_txComplete(void)
+</code></pre>
+
+<p>Query transmit state of the radio.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>TRUE
+<ul>
+<li>Previous packet flushed, ready for <code>radio_tx</code></li>
+</ul></li>
+<li>FALSE
+<ul>
+<li>Transmission in progress</li>
+</ul></li>
+</ul>
+
+<h2>radio_idle_cb</h2>
+
+<pre><code>   void radio_idle_cb(void)
+</code></pre>
+
+<p>Callback made to user on radio entering idle state.</p>
+
+<h2>radio_needTick</h2>
+
+<pre><code>   BOOLEAN radio_needTick(void)
+</code></pre>
+
+<p>Query if radio is active and <code>radio_tick()</code> needs calling</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>TRUE is tick needed</li>
+</ul>
+</body>
+</html>

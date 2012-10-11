@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Shell">Shell</a></h1>
+
+<p>Support for simple serial console.</p>
+
+<h2>shell_init</h2>
+
+<pre><code>   void shell_init(void)
+</code></pre>
+
+<p>Initialise serial shell. For handling line input, parsing arguments lists and calling handlers.</p>
+
+<h2>shell_tick</h2>
+
+<pre><code>   void shell_tick(void)
+</code></pre>
+
+<p>Advance shell state machine. Fetches characters from FIFO and parses lines.</p>
+
+<h2>shell_enable</h2>
+
+<pre><code>   void shell_enable(BOOLEAN enable)
+</code></pre>
+
+<p>Enable/disable parsing of arguments and calling handlers. When shell disabled, <code>shell_rx</code> function will be called with each line read.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>enable</code> [in]
+<ul>
+<li>TRUE for shell enabled, FALSE calls <code>shell_rx</code> with each line</li>
+</ul></li>
+</ul>
+
+<h2>shell_rx</h2>
+
+<pre><code>   void shell_rx(__xdata char *line)
+</code></pre>
+
+<p>Callback function for receiving raw shell lines.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>line</code> [in]
+<ul>
+<li>Line received</li>
+</ul></li>
+</ul>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Encrypted Packets">Encrypted Packets</a></h1>
+
+<p>All packets, both over radio and <a href="include_tcp.h.html#TCP">TCP</a> contain a length byte followed by a number of data bytes. For example:</p>
+
+<pre><code>   [0x03, 'A', 'B', 'C']
+</code></pre>
+
+<p>Encrypted packets consist of a length byte, a two byte sequence number, a 6 byte IV, a 4 byte MAC and an encrypted payload. AES-128 CBC is used for the encrypted payload, so it is always blocks of 16 bytes. The MAC is computed using AES-128 CBC-MAC.</p>
+
+<h2>PKTHDR</h2>
+
+<pre><code>   pkt_hdr_t *PKTHDR(uint8_t *pktbuf)
+</code></pre>
+
+<p>Utility macro to access members of an encrypted packet.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><p><code>pktbuf</code> [in]</p>
+
+<ul>
+<li>Encrypted packet
+<h3>Returns</h3></li>
+</ul></li>
+<li><p><code>pktbuf</code> cast to <code>pkt_hdr_t</code></p></li>
+</ul>
+
+<h2>PKTPAYLOAD</h2>
+
+<pre><code>   uint8_t *PKTPAYLOAD(uint8_t *pktbuf)
+</code></pre>
+
+<p>Utility macro to find the payload inside a decrypted packet.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><p><code>pktbuf</code> [in]</p>
+
+<ul>
+<li>Encrypted packet
+<h3>Returns</h3></li>
+</ul></li>
+<li><p>Pointer to payload of decrypted packet</p></li>
+</ul>
+
+<h2>pkt_enc</h2>
+
+<pre><code>   void pkt_enc(uint8_t *pktbuf, const uint8_t *key_enc, const uint8_t *key_mac)
+</code></pre>
+
+<p>Encrypt and add MAC to <code>pktbuf</code>. Note, once packet is decrypted it must be access via the <code>PKTPAYLOAD</code> macro.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>pktbuf</code> [in] [out]
+<ul>
+<li>incoming plaintext packet, transformed into encrypted packet</li>
+</ul></li>
+<li><code>key_enc</code> [in]
+<ul>
+<li>Key for encrypting payload</li>
+</ul></li>
+<li><code>key_mac</code> [in]
+<ul>
+<li>Key for calculating MAC</li>
+</ul></li>
+</ul>
+
+<h2>pkt_dec</h2>
+
+<pre><code>   BOOLEAN pkt_dec(uint8_t *pktbuf, const uint8_t *key_enc, const uint8_t *key_mac)
+</code></pre>
+
+<p>Decrypt and verify <code>pktbuf</code>, returning plaintext packet in <code>pktbuf</code>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>pktbuf</code> [in] [out]
+<ul>
+<li>incoming encrypted packet, transformed into plaintext</li>
+</ul></li>
+<li><code>key_enc</code> [in]
+<ul>
+<li>Key for decrypting payload</li>
+</ul></li>
+<li><p><code>key_mac</code> [in]</p>
+
+<ul>
+<li>Key for calculating MAC
+<h3>Returns</h3></li>
+</ul></li>
+<li><p>TRUE
+Success</p></li>
+<li>FALSE
+Failure</li>
+</ul>
+</body>
+</html>

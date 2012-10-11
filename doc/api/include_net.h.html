@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="IP Networking">IP Networking</a></h1>
+
+<p>Support for IP networking, provided by uIP.</p>
+
+<h2>net_init</h2>
+
+<pre><code>   void net_init(void)
+</code></pre>
+
+<p>Initialise networking stack.</p>
+
+<h2>net_tick</h2>
+
+<pre><code>   void net_tick(void)
+</code></pre>
+
+<p>Advance networking stack.</p>
+
+<h2>net_start</h2>
+
+<pre><code>   void net_start(void)
+</code></pre>
+
+<p>Start networking stack. Should be called once ethernet link is up.</p>
+
+<h2>net_stop</h2>
+
+<pre><code>   void net_stop(void)
+</code></pre>
+
+<p>Stop networking stack. Should be called when ethernet link goes down.</p>
+
+<h2>net_1hz</h2>
+
+<pre><code>   void net_1hz(void)
+</code></pre>
+
+<p>Notify network stack of passage of time. Should be called every 1s.</p>
+
+<h2>net_100hz</h2>
+
+<pre><code>   void net_100hz(void)
+</code></pre>
+
+<p>Notify network stack of passage of time. Should be called every 0.01s.</p>
+
+<h2>net_appcall</h2>
+
+<pre><code>   void net_appcall(void)
+</code></pre>
+
+<p>Callback to user to notify of uIP event.</p>
+
+<h2>net_udp_appcall</h2>
+
+<pre><code>   void net_udp_appcall(void)
+</code></pre>
+
+<p>Callback to user to notify of uIP UDP event.</p>
+
+<h2>net_close</h2>
+
+<pre><code>   void net_close(void)
+</code></pre>
+
+<p>Request that network socket be closed.</p>
+
+<h2>net_connected</h2>
+
+<pre><code>   void net_connected(uint8_t connected)
+</code></pre>
+
+<p>Callback to user to indicate that network socket has connected.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>connected</code> [in]
+<ul>
+<li>TRUE
+<ul>
+<li><a href="include_tcp.h.html#TCP">TCP</a> socket connected</li>
+</ul></li>
+<li>FALSE
+<ul>
+<li><a href="include_tcp.h.html#TCP">TCP</a> socket disconnected</li>
+</ul></li>
+</ul></li>
+</ul>
+
+<h2>net_rx</h2>
+
+<pre><code>   void net_rx(__xdata uint8_t *inpkt);
+</code></pre>
+
+<p>Callback to user on receiving a packet over socket.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>inpkt</code> [in]
+<ul>
+<li>Incoming packet</li>
+</ul></li>
+</ul>
+
+<h2>net_txbuf</h2>
+
+<pre><code>   __xdata uint8_t *net_txbuf(void)
+</code></pre>
+
+<p>Request transmit buffer to send a packet over socket.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Buffer to write outgoing packet</li>
+</ul>
+
+<h2>net_tx</h2>
+
+<pre><code>   void net_tx(void)
+</code></pre>
+
+<p>Transmit packet over socket, previously written with <code>net_txbuf</code>.</p>
+
+<h2>resolv_query</h2>
+
+<pre><code>   void resolv_query(char *name)
+</code></pre>
+
+<p>DNS lookup.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>name</code> [in]
+<ul>
+<li>Hostname</li>
+</ul></li>
+</ul>
+
+<h2>net_isup</h2>
+
+<pre><code>   BOOLEAN net_isup(void)
+</code></pre>
+
+<p>Check if ready to make outgoing connections (ie. ethernet up, DHCP completed).</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>TRUE is network is ready</li>
+</ul>
+
+<h2>net_periodic</h2>
+
+<pre><code>   void net_periodic(void)
+</code></pre>
+
+<p>Network background task, to be called periodically.</p>
+</body>
+</html>

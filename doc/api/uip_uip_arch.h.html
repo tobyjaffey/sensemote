@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\addtogroup uip</li>
+<li><p>{@</p></li>
+<li><p>\defgroup uiparch Architecture specific uIP functions</p></li>
+<li>@{
+*</li>
+<li>The functions in the architecture specific module implement the IP</li>
+<li>check sum and 32-bit additions.
+*</li>
+<li>The IP checksum calculation is the most computationally expensive</li>
+<li>operation in the <a href="include_tcp.h.html#TCP">TCP</a>/IP stack and it therefore pays off to</li>
+<li>implement this in efficient assembler. The purpose of the uip-arch</li>
+<li>module is to let the checksum functions to be implemented in</li>
+<li><p>architecture specific assembler.
+*</p></li>
+<li><p>\file</p></li>
+<li>Declarations of architecture specific functions.</li>
+<li><p>\author Adam Dunkels <a href="&#109;a&#105;&#108;&#116;&#x6F;:&#97;&#x64;&#x61;&#x6D;&#64;&#100;u&#110;&#107;&#101;l&#115;&#x2E;&#x63;&#x6F;&#109;">&#97;&#x64;&#x61;&#x6D;&#64;&#100;u&#110;&#107;&#101;l&#115;&#x2E;&#x63;&#x6F;&#109;</a></p></li>
+<li><p>Carry out a 32-bit addition.
+*</p></li>
+<li>Because not all architectures for which uIP is intended has native</li>
+<li>32-bit arithmetic, uIP uses an external C function for doing the</li>
+<li>required 32-bit additions in the <a href="include_tcp.h.html#TCP">TCP</a> protocol processing. This</li>
+<li>function should add the two arguments and place the result in the</li>
+<li>global variable uip_acc32.
+*</li>
+<li>\note The 32-bit integer pointed to by the op32 parameter and the</li>
+<li>result in the uip_acc32 variable are in network byte order (big</li>
+<li>endian).
+*</li>
+<li>\param op32 A pointer to a 4-byte array representing a 32-bit</li>
+<li>integer in network byte order (big endian).
+*</li>
+<li><p>\param op16 A 16-bit integer in host byte order.</p></li>
+<li><p>Calculate the Internet checksum over a buffer.
+*</p></li>
+<li>The Internet checksum is the one's complement of the one's</li>
+<li>complement sum of all 16-bit words in the buffer.
+*</li>
+<li>See RFC1071.
+*</li>
+<li>\note This function is not called in the current version of uIP,</li>
+<li>but future versions might make use of it.
+*</li>
+<li>\param buf A pointer to the buffer over which the checksum is to be</li>
+<li>computed.
+*</li>
+<li>\param len The length of the buffer over which the checksum is to</li>
+<li>be computed.
+*</li>
+<li><p>\return The Internet checksum of the buffer.</p></li>
+<li><p>Calculate the IP header checksum of the packet header in uip_buf.
+*</p></li>
+<li>The IP header checksum is the Internet checksum of the 20 bytes of</li>
+<li>the IP header.
+*</li>
+<li>\return The IP header checksum of the IP header in the uip_buf</li>
+<li><p>buffer.</p></li>
+<li><p>Calculate the <a href="include_tcp.h.html#TCP">TCP</a> checksum of the packet in uip<em>buf and uip</em>appdata.
+*</p></li>
+<li>The <a href="include_tcp.h.html#TCP">TCP</a> checksum is the Internet checksum of data contents of the</li>
+<li><a href="include_tcp.h.html#TCP">TCP</a> segment, and a pseudo-header as defined in RFC793.
+*</li>
+<li>\note The uip_appdata pointer that points to the packet data may</li>
+<li>point anywhere in memory, so it is not possible to simply calculate</li>
+<li>the Internet checksum of the contents of the uip_buf buffer.
+*</li>
+<li>\return The <a href="include_tcp.h.html#TCP">TCP</a> checksum of the <a href="include_tcp.h.html#TCP">TCP</a> segment in uip_buf and pointed</li>
+<li><p>to by uip_appdata.</p>
+
+<p>@} 
+@} </p></li>
+</ul>
+</body>
+</html>

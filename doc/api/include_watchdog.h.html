@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Watchdog">Watchdog</a></h1>
+
+<p>Hardware watchdog.</p>
+
+<h2>watchdog_init</h2>
+
+<pre><code>   void watchdog_init(void)
+</code></pre>
+
+<p>Initialise hardware watchdog (currently disables it).</p>
+
+<h2>watchdog_reset</h2>
+
+<pre><code>   void watchdog_reset(void)
+</code></pre>
+
+<p>Cause a system reset using the hardware watchdog.</p>
+
+<h2>watchdog_kick</h2>
+
+<pre><code>   void watchdog_kick(void)
+</code></pre>
+
+<p>Reset the watchdog countdown timer</p>
+</body>
+</html>

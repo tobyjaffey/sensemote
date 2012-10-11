@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="TCP">TCP</a></h1>
+
+<p>Support for <a href="include_tcp.h.html#TCP">TCP</a> transfers.</p>
+
+<h2>tcp_connect</h2>
+
+<pre><code>   void tcp_connect(char *host, uint16_t port);
+</code></pre>
+
+<p>Request <a href="include_tcp.h.html#TCP">TCP</a> connection to <code>host</code> on <code>port</code>. <code>host</code> must already be in resolver cache.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>host</code> [in]
+<ul>
+<li>Fully qualified hostname</li>
+</ul></li>
+<li><code>port</code> [in]
+<ul>
+<li><a href="include_tcp.h.html#TCP">TCP</a> port number</li>
+</ul></li>
+</ul>
+
+<h2>tcp_disconnect</h2>
+
+<pre><code>   void tcp_disconnect(void)
+</code></pre>
+
+<p>Disconnect <a href="include_tcp.h.html#TCP">TCP</a> connection.</p>
+
+<h2>tcp<em>get</em>txbuf</h2>
+
+<pre><code>   __xdata uint8_t *tcp_get_txbuf(void);
+</code></pre>
+
+<p>Fetch write buffer pointer.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Pointer to transmit buffer. Caller should take care not to overrun buffer</li>
+<li>NULL if still transmitting (pending <a href="include_tcp.h.html#TCP">TCP</a> ACK)</li>
+</ul>
+
+<h2>tcp_tx</h2>
+
+<pre><code>   void tcp_tx(uint16_t len);
+</code></pre>
+
+<p>Transmit data, previously written to <code>tcp_get_txbuf</code>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>len</code> [in]
+<ul>
+<li>Length of data previously written to <code>tcp_get_txbuf</code></li>
+</ul></li>
+</ul>
+
+<h2>tcp_rx</h2>
+
+<pre><code>   void tcp_rx(__xdata uint8_t *buf, uint16_t len);
+</code></pre>
+
+<p>Callback made on reception of tcp data</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>buf</code> [in]
+<ul>
+<li>Received data</li>
+</ul></li>
+<li><code>len</code> [in]
+<ul>
+<li>length of buffer</li>
+</ul></li>
+</ul>
+
+<h2>tcp_event</h2>
+
+<pre><code>   void tcp_event(uint8_t event);
+</code></pre>
+
+<p>Callback to signify state of <a href="include_tcp.h.html#TCP">TCP</a> state machine.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>event</code> [in]
+<ul>
+<li>Event code</li>
+</ul></li>
+</ul>
+
+<h2>tcp_resolv</h2>
+
+<pre><code>   void tcp_resolv(char *name);
+</code></pre>
+
+<p>Start DNS resolution of <code>name</code>.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>name</code> [in]
+<ul>
+<li>Fully qualified host name</li>
+</ul></li>
+</ul>
+
+<h2>tcp_resolved</h2>
+
+<pre><code>   void tcp_resolved(void);
+</code></pre>
+
+<p>Callback indicating that DNS resolution has completed.</p>
+
+<h2>tcp_tick</h2>
+
+<pre><code>   void tcp_tick(void);
+</code></pre>
+
+<p>Advance <a href="include_tcp.h.html#TCP">TCP</a> state machine</p>
+
+<h2>tcp_appcall</h2>
+
+<pre><code>   void tcp_appcall(void);
+</code></pre>
+
+<p>Call into <a href="include_tcp.h.html#TCP">TCP</a> logic from uIP.</p>
+</body>
+</html>

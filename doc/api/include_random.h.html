@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="Random">Random</a></h1>
+
+<p>Hardware assisted random number generator. AES-128 CBC based with seeding from radio.</p>
+
+<h2>random_init</h2>
+
+<pre><code>   void random_init(void)
+</code></pre>
+
+<p>Initialise random number generator, must occur after <code>radio_init</code>.</p>
+
+<h2>random_addEntropy</h2>
+
+<pre><code>   void random_addEntropy(uint8_t r)
+</code></pre>
+
+<p>Add a byte of entropy to the random number generator. Typically this will come from the radio, adc or some other unpredictable source.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>r</code> [in]
+<ul>
+<li>Byte of entropy</li>
+</ul></li>
+</ul>
+
+<h2>random_read</h2>
+
+<pre><code>   void random_read(uint8_t *buf, uint8_t len)
+</code></pre>
+
+<p>Read a sequence of random bytes into a buffer.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>buf</code> [out]
+<ul>
+<li>Output buffer for random data</li>
+</ul></li>
+<li><code>len</code> [in]
+<ul>
+<li>Number of bytes to place in buffer</li>
+</ul></li>
+</ul>
+</body>
+</html>

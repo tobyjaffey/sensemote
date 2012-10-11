@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><h1><a name="System timer">System timer</a></h1>
+
+<p>A free-running system timer for measuring real time. Using CC1110 Timer1.</p>
+
+<h2>timer_init</h2>
+
+<pre><code>   void timer_init(void)
+</code></pre>
+
+<p>Initialise timer.</p>
+
+<h2>timer_reinit</h2>
+
+<pre><code>   void timer_reinit(void)
+</code></pre>
+
+<p>Reinitialise timer after sleep.</p>
+
+<h2>timer_getTicks</h2>
+
+<pre><code>   uint16_t timer_getTicks(void)
+</code></pre>
+
+<p>Get the number of raw system timer ticks.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Number of ticks</li>
+</ul>
+
+<h2>timer_toMS</h2>
+
+<pre><code>   uint16_t timer_toMS(uint32_t oldTick, uint32_t newTick)
+</code></pre>
+
+<p>Calculate the delta in milliseconds between two raw timer tick counts.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>oldTick</code> [in]
+<ul>
+<li>Beginning of period, in raw system ticks</li>
+</ul></li>
+<li><code>newTick</code> [in]
+<ul>
+<li>End of period, in raw system ticks</li>
+</ul></li>
+</ul>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Number of milliseconds elapsed</li>
+</ul>
+
+<h2>timer_delayMS</h2>
+
+<pre><code>   void timer_delayMS(uint16_t delayMs)
+</code></pre>
+
+<p>Busy wait for <code>delayMs</code> milliseconds.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>delayMs</code> [in]
+<ul>
+<li>Number of milliseconds to delay for</li>
+</ul></li>
+</ul>
+
+<h2>timer_addMS</h2>
+
+<pre><code>   void timer_addMS(uint16_t deltaMs)
+</code></pre>
+
+<p>Increment tick counter by <code>deltaMs</code> milliseconds, used internally after sleep.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>deltaMs</code> [in]
+<ul>
+<li>Number of milliseconds to add</li>
+</ul></li>
+</ul>
+
+<h2>timer_uptimeAddQs</h2>
+
+<pre><code>   void timer_uptimeAddQs(uint8_t qs)
+</code></pre>
+
+<p>Add a number of quarter seconds to global uptime. Used internally.</p>
+
+<h3>Parameters</h3>
+
+<ul>
+<li><code>qs</code> [in]
+<ul>
+<li>Number of quarter seconds to add</li>
+</ul></li>
+</ul>
+
+<h2>timer_getUptimeQS</h2>
+
+<pre><code>   uint32_t timer_getUptimeQS(void)
+</code></pre>
+
+<p>Get global quarter second timer.</p>
+
+<h3>Returns</h3>
+
+<ul>
+<li>Number of quarter seconds elapsed since boot</li>
+</ul>
+</body>
+</html>

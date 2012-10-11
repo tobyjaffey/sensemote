@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SenseMote</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<!-- Le styles -->
+<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+<style type="text/css">
+body {
+padding-top: 60px;
+padding-bottom: 40px;
+}
+.sidebar-nav {
+padding: 9px 0;
+}
+</style>
+<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<!-- Le fav and touch icons -->
+<link rel="shortcut icon" href="bootstrap/ico/favicon.ico">
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="bootstrap/ico/apple-touch-icon-114-precomposed.png">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="bootstrap/ico/apple-touch-icon-72-precomposed.png">
+<link rel="apple-touch-icon-precomposed" href="bootstrap/ico/apple-touch-icon-57-precomposed.png">
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="index.html">SenseMote</a>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li><a href="index.html">Home</a></li>
+                    <li class="active"><a href="sensemote.html">SenseMote-XRF</a></li>
+                    <li><a href="sensehub.html">SenseHub</a></li>
+                    <li><a href="api/index.html">Low level API</a></li>
+                    <li><a href="simulator.html">PC Simulator</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/fluid-->
+    </div><!--/inner-->
+</div>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span3">
+            <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li class="nav-header">SenseMote</li>
+                    <li><a href="#getting">Getting One</a></li>
+                    <li><a href="#pinout">Pinout</a></li>
+                    <li><a href="#sketches">Example Sketches</a></li>
+                    <li>Basics
+                    <ul>
+                        <li><a href="#setup">setup()</a>
+                        <li><a href="#loop">loop()</a>
+                        <li><a href="#callbacks">Callbacks</a>
+                    </ul>
+                    <li>Variables
+                    <ul>
+                        <li><a href="#__xdata">__xdata</a>
+                    </ul>
+                    <li>Constants
+                    <ul>
+                        <li><a href="#HIGHLOW">HIGH, LOW</a>
+                        <li><a href="#INPUTOUTPUT">INPUT, OUTPUT</a>
+                        <li><a href="#FALLINGRISING">FALLING, RISING</a>
+                    </ul>
+
+                    <li>Examples
+                    <ul>
+                        <li><a href="#blink">Blinking LED</a>
+                        <li><a href="#fade">Fading LED</a>
+                        <li><a href="#switch">Switched LED</a>
+                        <li><a href="#pbput">Pachube Put</a>
+                        <li><a href="#pbget">Pachube Get</a>
+                    </ul>
+
+                    <li>Digital
+                    <ul>
+                        <li><a href="#pinMode">pinMode()</a>
+                        <li><a href="#digitalRead">digitalRead()</a>
+                        <li><a href="#digitalWrite">digitalWrite()</a>
+                    </ul>
+
+                    <li>Analogue
+                    <ul>
+                        <li><a href="#analogRead">analogRead()</a>
+                        <li><a href="#analogWrite">analogWrite()</a>
+                    </ul>
+
+                    <li>I2C
+                    <ul>
+                        <li><a href="#i2cInit">i2cInit()</a>
+                        <li><a href="#i2cWrite8">i2cWrite8()</a>
+                        <li><a href="#i2cRead8">i2cRead8()</a>
+                        <li><a href="#i2cRead16">i2cRead16()</a>
+                    </ul>
+
+                    <li>SPI
+                    <ul>
+                        <li><a href="#spiInit">spiInit()</a>
+                        <li><a href="#spiTransfer">spiTransfer()</a>
+                    </ul>
+
+                    <li>Serial/UART
+                    <ul>
+                        <li><a href="#serialInit">serialInit()</a>
+                        <li><a href="#serialWriteString">serialWriteString()</a>
+                        <li><a href="#serialWriteChar">serialWriteChar()</a>
+                        <li><a href="#serialWriteDec">serialWriteDec()</a>
+                        <li><a href="#serialReadChar">serialReadChar()</a>
+                    </ul>
+
+                    <li>Time
+                    <ul>
+                        <li><a href="#delay">delay()</a>
+                        <li><a href="#sleepQs">sleepQs()</a>
+                        <li><a href="#attach1Hz">attach1Hz()</a>
+                        <li><a href="#detach1Hz">detach1Hz()</a>
+                    </ul>
+
+                    <li>Interrupts
+                    <ul>
+                        <li><a href="#attachInterrupt">attachInterrupt()</a>
+                        <li><a href="#detachInterrupt">detachInterrupt(pin)</a>
+                    </ul>
+
+                    <li>Pachube
+                    <ul>
+                        <li><a href="#pachubePut">pachubePut()</a>
+                        <li><a href="#pachubeGet">pachubeGet()</a>
+                        <li><a href="#pachubePoll">pachubePoll()</a>
+                        <li><a href="#pachubeKey">pachubeKey()</a>
+                        <li><a href="#pachubeValue">pachubeValue()</a>
+                        <li><a href="#pachubeSeq">pachubeSeq()</a>
+                    </ul>
+
+                </ul>
+            </div><!--/.well -->
+        </div><!--/span-->
+        <div class="span9">
+            <div class="row-fluid">
+                <h2>SenseMote-XRF</h2>
+                <p>SenseMote-XRF is an alternative firmware for the Ciseco XRF CC1110 module, customisable by you. Use the Arduino-like sketch language to build wireless sensors and actuators, then connect them to the internet with the SenseHub.
+                </p>
+            </div><!--/row-->
+        </div>
+
+        <div class="span9">
+            <div class="row-fluid">
+                <h2><a name="getting">Getting One</a></h2>
+                <p>
+                    Currently, SenseMote is a DIY project. You will need to obtain an XRF CC1110 module from Ciseco (or equivalent) and reflash it with the <a href="https://github.com/jobytaffey/cctl">CCTL bootloader</a>. For this we recommend using either the CC-Debugger or a GoodFET. We hope to start offering pre-flashed modules in future.
+                </p>
+                <p>
+                    Once your module has been flashed with the bootloader and your serial cable is attached, you're ready to go. Download the SenseMote firmware and begin coding.
+                </p>
+                <h2><a name="apps">Making an app</a></h2>
+                <p>
+                    All apps are kept in the <code>apps/</code> directory of the firmware tree. Before building your first app, the SenseMote firmware needs to know where your serial port is. Edit <code>config.mk</code> and change <code>CCTL_DEVICE</code> appropriately. Connect power and serial to your XRF, then attach an LED via a current limiting resistor to pin <code>19</code> as shown below.<br><img src="ledschem.png"><br> 
+                </p>
+                <p>
+                From the top of the firmware tree type <code>make APP=ledsketch install</code>. You should see the LED fading.
+                </p>
+                <p>
+                To create a new app, simply copy <code>apps/ledsketch</code> and change the directory and file names. See below for details of the sketch API.
+                </p>
+            </div><!--/row-->
+        </div>
+
+        <div class="span9">
+            <div class="row-fluid">
+                <h2><a name="pinout">Pinout</a></h2>
+                <p>
+                    SenseMote-XRF provides a UART, high speed SPI, I2C, Analogue-to-digital-converter (ADC), hardware PWM and general purpose IO pins.
+                    <img src="xrf.png">
+                </p>
+                <p>
+                This diagram shows all of the pins and their uses. Sketches refer to the XRF pin numbers (in white). The CC1110 datasheet refers to the pins by their outer names (<code>P0_1</code>, <code>P2_1</code>, etc).
+                </p>
+
+                <p>
+                2.0V-3.6V must be supplied between pins <code>1</code> and <code>10</code>.
+                </p>
+                <p>
+                The reset (<code>RST</code>) pin may safely be left unconnected. Briefly shorting <code>RST</code> to <code>GND</code> will reset the board.
+                </p>
+            </div><!--/row-->
+        </div>
+
+
+
+        <div class="span9">
+            <div class="row-fluid">
+
+<h2>Language</h2>
+<p>
+The sketch language is an Arduino-like shorthand C. All standard C operators and types are available as is much of the standard library.
+</p>
+
+
+<h3>Basics</h3>
+<h4><a name="setup">setup()</a></h4>
+<p>
+Every sketch must contain one <code>setup()</code> function. The function will be called once on startup.
+</p>
+
+<h4><a name="loop">loop()</a></h4>
+<p>
+Every sketch must contain one <code>loop()</code> function. The function will be called repeatedly.
+</p>
+
+<h4><a name="callbacks">Callbacks</a></h4>
+<p>
+All callback functions are of type <code>void callback(void)</code>.
+</p>
+
+<h3>Variables</h3>
+<h4><a name="__xdata">__xdata</a></h4>
+<p>
+The processor used, the 8051, only has a very small amount of internal RAM. Automatic variables declared on the stack (ie. declared inside your functions) use this RAM. However, the CC1110 has several kilobytes of XRAM. The XRAM is external to the 8051 core, but still on-chip. Any large variables declared in sketches should be placed in XRAM.
+</p>
+<p>
+To place a variable in XRAM, it must be either <code>static</code> or global in scope and declared using the <code>__xdata</code> attribute.
+</p>
+Declaring a global variable:
+<p>
+<pre class="code">
+__xdata int my_var = 7;
+
+void setup()
+{
+  ...
+}
+</pre>
+</p>
+
+Declaring a static variable within a function (scoped to function, but persistent)
+<p>
+<pre class="code">
+void loop()
+{
+  static __xdata int my_var = 7;
+  ...
+}
+</pre>
+</p>
+
+<h3>Constants</h3>
+<h4><a name="HIGHLOW">HIGH, LOW</a></h4>
+<p>
+Digital pins can either be <code>HIGH</code> (3V) or <code>LOW</code> (GND). Calls to <code>digitalWrite()</code> accept <code>HIGH</code> or <code>LOW</code> while <code>digitalRead()</code> returns <code>HIGH</code> or <code>LOW</code>.
+</p>
+
+<h4><a name="INPUTOUTPUT">INPUT, OUTPUT</a></h4>
+<p>
+Digital pins can be configured as <code>OUTPUT</code> where they can be driven <code>HIGH</code> or <code>LOW</code> using <code>digitalWrite()</code>. Or pins may be configured as <code>INPUT</code> where they can be read using <code>digitalRead()</code>.
+</p>
+
+<h4><a name="FALLINGRISING">FALLING, RISING</a></h4>
+<p>
+Digital <code>INPUT</code> pins with attached interrupts may be configured to interrupt on a <code>FALLING</code> or <code>RISING</code> edge.
+</p>
+
+<h3>Digital IO</h3>
+<p>
+All pins except <code>GND</code>, <code>3V</code> and <code>RST</code> are available as both digital inputs and outputs.
+</p>
+<h4><a name="pinMode">pinMode(pin, mode)</a></h4>
+<p>
+Configures the pin to be either <code>INPUT</code> or <code>OUTPUT</code>.
+</p>
+
+<h4><a name="digitalRead">digitalRead(pin)</a></h4>
+<p>
+Reads the current state of a pin configured as <code>INPUT</code>, either <code>HIGH</code> or <code>LOW</code>.
+</p>
+
+<h4><a name="digitalWrite">digitalWrite(pin, value)</a></h4>
+<p>
+Sets the state of a pin configured as <code>OUTPUT</code> to value, either <code>HIGH</code> or <code>LOW</code>.
+</p>
+
+<h3>Analogue IO</h3>
+<p>
+Pins <code>11</code>, <code>12</code>, <code>13</code>, <code>14</code> and <code>15</code> can be used as analogue inputs.
+Pins <code>4</code>, <code>9</code> and <code>19</code> can be used as PWM outputs.
+</p>
+
+<h4><a name="analogRead">analogRead(pin)</a></h4>
+<p>
+Samples the voltage at pin, returns a 12 bit unsigned value.
+</p>
+
+<h4><a name="analogWrite">analogWrite(pin, value)</a></h4>
+<p>
+Produce a square wave on pin of specified 8-bit duty cycle.
+</p>
+
+<h3>I2C</h3>
+<p>
+Pins <code>20</code> and <code>18</code> may optionally be used to provide an I2C master.
+External pullup resistors are needed.
+</p>
+
+<h4><a name="i2cInit">i2cInit()</a></h4>
+<p>
+<code>i2cInit()</code> must be called before any other i2c functions to configure the pins.
+</p>
+
+<h4><a name="i2cRead8">i2cRead8(deviceAddress, registerAddress)</a></h4>
+<p>
+Reads and returns 8 bits of data from <code>registerAddress</code> on <code>deviceAddress</code>.
+</p>
+
+<h4><a name="i2cRead16">i2cRead16(deviceAddress, registerAddress)</a></h4>
+<p>
+Reads and returns 16 bits of data from <code>registerAddress</code> on <code>deviceAddress</code>.
+</p>
+
+<h4><a name="i2cWrite8">i2cWrite8(deviceAddress, registerAddress, data)</a></h4>
+<p>
+Writes 8 bits of <code>data</code> to <code>registerAddress</code> on <code>deviceAddress</code>.
+</p>
+
+<h3>SPI</h3>
+<p>
+Pins <code>6</code>, <code>7</code> and <code>8</code> may optionally be used to provide a SPI master.
+</p>
+
+<h4><a name="spiInit">spiInit()</a></h4>
+<p>
+<code>spiInit()</code> must be called before any other spi functions to configure the pins.
+</p>
+
+<h4><a name="spiTransfer">spiTransfer(dataByte)</a></h4>
+<p>
+Send <code>dataByte</code> and return received data.
+</p>
+
+<h3>Serial/UART</h3>
+<p>
+Pins <code>2</code> and <code>3</code> may optionally be used to provide a serial port at 115200bps 8N1.
+</p>
+
+<h4><a name="serialInit">serialInit()</a></h4>
+<p>
+<code>serialInit()</code> should be called before any other serial functions to configure the pins.
+</p>
+
+<h4><a name="serialWriteString">serialWriteString(str)</a></h4>
+<p>
+Writes <code>str</code> to the serial port.
+</p>
+
+<h4><a name="serialWriteChar">serialWriteChar(c)</a></h4>
+<p>
+Writes <code>c</code> to the serial port as a raw byte.
+</p>
+
+<h4><a name="serialWriteDec">serialWriteDec(d)</a></h4>
+<p>
+Writes <code>d</code> to the serial port as a signed 32 bit value in decimal.
+</p>
+
+<h4><a name="serialReadChar">serialReadChar()</a></h4>
+<p>
+Reads from the serial port. If a character is available in the buffer, returns it, else returns <code>-1</code>.
+</p>
+
+
+<h3>Time</h3>
+<h4><a name="delay">delay(ms)</a></h4>
+<p>
+Pauses execution by spinning in a loop for <code>ms</code> milliseconds. Interrupts will still be serviced.
+</p>
+
+<h4><a name="sleepQs">sleepQs(qs)</a></h4>
+<p>
+Pauses execution by sleeping in a low power mode for <code>qs</code> quarter seconds. Only external pin interrupts (ie. pins <code>13</code>, <code>14</code>, <code>15</code>) will wake the board early.
+</p>
+
+<h4><a name="attach1Hz">attach1Hz(timercb)</a></h4>
+<p>
+Attaches a <code>timercb</code> callback function to be called once each second.
+</p>
+
+<h4><a name="detach1Hz">detach1Hz()</a></h4>
+<p>
+Detaches any callback function registered to be called once each second.
+</p>
+
+<h3>Interrupts</h3>
+<p>
+Pins <code>13</code>, <code>14</code> and <code>15</code>, when configured as <code>INPUT</code> may optionally generate interrupts. Interrupts can be raised on either falling or rising edge, but all three pins must share the same mode.
+</p>
+
+<h4><a name="attachInterrupt">attachInterrupt(pin, callback, mode)</a></h4>
+<p>
+Attach callback function to pin according to <code>mode</code>, either <code>RISING</code> or <code>FALLING</code>. The callback function must take no arguments and return no value. The callback function will be called in interrupt context, so it is important not to perform any slow tasks in the callback.
+</p>
+
+<h4><a name="detachInterrupt">detachInterrupt(pin)</a></h4>
+<p>
+Detach any registered callback from <code>pin</code>.
+</p>
+
+<h3>Pachube</h3>
+<p>
+Pachube access is provided via the radio link to a hub. Delivery of messages and reception of responses are not guaranteed. But, if desired, a reliable transport using retries and acknowledgements can be implemented by a sketch. All Pachube access is manipulating string key/value data within a single Pachube feed.
+</p>
+
+
+<h4><a name="pachubePut">pachubePut(key, val, completecb)</a></h4>
+<p>
+Sends a request to put <code>val</code> into <code>key</code>. Both <code>val</code> and <code>key</code> must be strings. At a later time, if this request is successfully acknowledged by Pachube then <code>completecb</code> will be called. If a previous message is acknowledged after calling <code>pachubePut()</code> again, the response will be returned in the new <code>completecb</code>. If <code>completecb</code> is <code>0</code> then no callback will be made.
+</p>
+
+<h4><a name="pachubeGet">pachubeGet(key, listencb)</a></h4>
+<p>
+Sends a request to get string <code>key</code>. At a later time, if a response comes back then <code>listencb</code> will be called. If a previous message is responded to after calling <code>pachubeGet()</code> again, the response will be returned in the new <code>listencb</code>. If <code>listencb</code> is <code>0</code> then no callback will be made.
+</p>
+
+<h4><a name="pachubePoll">pachubePoll()</a></h4>
+<p>
+Sends a request to the hub to request any pending responses from Pachube. If a response is received then <code>listencb</code> (passed into <code>pachubeGet()</code>) or <code>completecb</code> (passed into <code>pachubePut()</code>) will be called. Both <code>pachubeGet()</code> and <code>pachubePut()</code> also poll the hub, so <code>pachubePoll()</code> should only be called when a response is expected but there is nothing new to send.
+</p>
+
+<h4><a name="pachubeSeq">pachubeSeq()</a></h4>
+<p>
+Returns sequence number of last received message
+</p>
+
+<h4><a name="pachubeKey">pachubeKey()</a></h4>
+<p>
+Returns a string containing the last key received. Use this from within the <code>listencb</code> passed to <code>pachubeGet()</code>.
+</p>
+
+<h4><a name="pachubeValue">pachubeValue()</a></h4>
+<p>
+Returns a string containing the last value received. Use this from within the <code>listencb</code> passed to <code>pachubeGet()</code>.
+</p>
+
+
+<h2><a name="sketches">Example Sketches</a></h2>
+The following examples assume the circuit below, using a 3V serial adapter, LED and a push button.
+
+<center><img src="led-switch-schem.png"></center>
+
+<h3><a name="blink">Blinking LED</a></h3>
+<p>
+Blink an LED with a 1s period.
+</p>
+<p>
+<pre class="code">
+int state = HIGH;
+void setup()
+{
+    pinMode(19, OUTPUT);
+}
+void loop()
+{
+    digitalWrite(19, state);
+    state = !state;
+    delay(1000);
+}
+</pre>
+</p>
+
+<h3><a name="fade">Fading LED</a></h3>
+<p>
+Fade the brightness of an LED up and down using PWM.
+</p>
+<p>
+<pre class="code">
+int val = 0;
+int dir = 1;
+void setup()
+{
+    pinMode(19, OUTPUT);
+}
+void loop()
+{
+    analogWrite(19, val);
+    delay(10);
+    val += dir;
+    if (val == 0 || val == 255)
+        dir = -dir;
+}
+</pre>
+</p>
+
+<h3><a name="switch">Switched LED</a></h3>
+<p>
+Read a push button and use it to control an LED.
+</p>
+<p>
+<pre class="code">
+void setup()
+{
+    pinMode(19, OUTPUT);
+    pinMode(11, INPUT);
+}
+void loop()
+{
+    digitalWrite(19, digitalRead(11));
+}
+</pre>
+</p>
+
+<h3><a name="pbput">Pachube Put</a></h3>
+<p>
+Send a message to Pachube to set <code>mykey</code> to an incremeting integer. Low power sleep for 2s, repeat.
+</p>
+<p>
+<pre class="code">
+int myval = 0;
+void setup()
+{
+}
+void loop()
+{
+    char str[32];
+    itoa(myval++, str);
+    pachubePut("mykey", str, 0);
+    sleepQs(8);
+}
+</pre>
+</p>
+
+<h3><a name="pbget">Pachube Get</a></h3>
+<p>
+Poll Pachube every 2s for value of <code>led</code>, then set physical LED to this value.
+</p>
+<p>
+<pre class="code">
+void setup()
+{
+    pinMode(19, OUTPUT);
+}
+
+void response()
+{
+    analogWrite(19, pachubeValue());
+}
+
+void loop()
+{
+    pachubeGet("led", response);
+    sleepQs(8);
+}
+</pre>
+</p>
+
+
+
+            </div><!--/row-->
+        </div>
+
+
+
+
+    </div><!--/row-->
+</div>
+
+<hr>
+
+<footer>
+<p>&copy; SenseMote 2012</p>
+</footer>
+
+</div><!--/.fluid-container-->
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="bootstrap/js/jquery.js"></script>
+<script src="bootstrap/js/bootstrap-transition.js"></script>
+<script src="bootstrap/js/bootstrap-alert.js"></script>
+<script src="bootstrap/js/bootstrap-modal.js"></script>
+<script src="bootstrap/js/bootstrap-dropdown.js"></script>
+<script src="bootstrap/js/bootstrap-scrollspy.js"></script>
+<script src="bootstrap/js/bootstrap-tab.js"></script>
+<script src="bootstrap/js/bootstrap-tooltip.js"></script>
+<script src="bootstrap/js/bootstrap-popover.js"></script>
+<script src="bootstrap/js/bootstrap-button.js"></script>
+<script src="bootstrap/js/bootstrap-collapse.js"></script>
+<script src="bootstrap/js/bootstrap-carousel.js"></script>
+<script src="bootstrap/js/bootstrap-typeahead.js"></script>
+
+</body>
+</html>

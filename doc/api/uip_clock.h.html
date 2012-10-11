@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <title>Developer Guide</title>
+    <link rel="stylesheet" href="highlight.css">
+    <script src="highlight.pack.js" type="text/javascript"></script>
+    <script>
+     hljs.tabReplace = '    ';
+     hljs.initHighlightingOnLoad();
+     </script>
+</head>
+<body><ul>
+<li>\defgroup clock <a href="include_clock.h.html#Clock">Clock</a> interface
+*</li>
+<li>The clock interface is the interface between the \ref timer "timer library"</li>
+<li>and the platform specific clock functionality. The clock</li>
+<li>interface must be implemented for each platform that uses the \ref</li>
+<li>timer "timer library".
+*</li>
+<li>The clock interface does only one this: it measures time. The clock</li>
+<li>interface provides a macro, CLOCK_SECOND, which corresponds to one</li>
+<li>second of system time.
+*</li>
+<li>\sa \ref timer "Timer library"
+*</li>
+<li><p>@{</p></li>
+<li><p>Initialize the clock library.
+*</p></li>
+<li>This function initializes the clock library and should be called</li>
+<li><p>from the main() function of the system.
+*</p></li>
+<li><p>Get the current clock time.
+*</p></li>
+<li>This function returns the current system clock time.
+*</li>
+<li><p>\return The current clock time, measured in system ticks.</p></li>
+<li><p>A second, measured in system clock time.
+*</p></li>
+<li><p>\hideinitializer</p>
+
+<p>@} </p></li>
+</ul>
+</body>
+</html>
