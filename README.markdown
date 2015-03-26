@@ -10,7 +10,7 @@ For more information, visit http://www.sensemote.com
 
 SenseMote is distributed under the permissive ISC/Simplified BSD License
 
-    Copyright (c) 2012, Toby Jaffey <toby@sensemote.com>
+    Copyright (c) 2012, Toby Jaffey <toby@hodgepig.org>
 
     Permission to use, copy, modify, and/or distribute this software for any
     purpose with or without fee is hereby granted, provided that the above
